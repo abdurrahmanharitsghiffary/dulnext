@@ -25,16 +25,16 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-app_include_css = "/assets/dulnext/css/app.min.css"
-app_include_js = "/assets/dulnext/js/app.min.js"
+app_include_css = ["/assets/dulnext/css/app.min.css"]
+app_include_js = ["/assets/dulnext/js/app.min.js"]
 
 node_modules = {
-    "joi": {"js": ["assets/dulnext/node_modules/joi/dist/joi-browser.min.js"]}
+    "joi": {"js": ["/assets/dulnext/node_modules/joi/dist/joi-browser.min.js"]}
 }
 
 # include js, css files in header of web template
-web_include_css = "/assets/dulnext/css/portal.min.css"
-web_include_js = "/assets/dulnext/js/portal.min.js"
+web_include_css = ["/assets/dulnext/css/portal.min.css"]
+web_include_js = ["/assets/dulnext/js/portal.min.js"]
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "dulnext/public/scss/website"
@@ -70,7 +70,7 @@ web_include_js = "/assets/dulnext/js/portal.min.js"
 
 website_context = {
     "favicon": "/assets/dulnext/images/dulnext-favicon.svg",
-    "splash_image": "/assets/dulnext/images/dulnext-logo.svg",
+    "splash_image": "/assets/dulnext/images/dulnext-logo.png",
 }
 
 # Generators
