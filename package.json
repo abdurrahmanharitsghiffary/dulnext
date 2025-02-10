@@ -1,0 +1,10 @@
+{
+    "name": "dulnext",
+    "description": "Open Source Frappe Template powered by Abdurrahman Harits Ghiffary",
+    "author": "Abdurrahman Harits Ghiffary",
+    "contributors": ["abdmanharitsghiffary"],
+    "devDependencies": {},
+    "dependencies": {
+      "onscan.js": "^1.5.2"
+}
+  }

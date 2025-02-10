@@ -1,4 +1,4 @@
-app_name = "dudul_frappe_template"
+app_name = "dulnext"
 app_title = "Dudul Frappe Template"
 app_publisher = "abdmanharits@gmail.com"
 app_description = "Frappe Template Created By Myself"
@@ -13,11 +13,11 @@ app_license = "mit"
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
 # 	{
-# 		"name": "dudul_frappe_template",
-# 		"logo": "/assets/dudul_frappe_template/logo.png",
+# 		"name": "dulnext",
+# 		"logo": "/assets/dulnext/logo.png",
 # 		"title": "Dudul Frappe Template",
-# 		"route": "/dudul_frappe_template",
-# 		"has_permission": "dudul_frappe_template.api.permission.has_app_permission"
+# 		"route": "/dulnext",
+# 		"has_permission": "dulnext.api.permission.has_app_permission"
 # 	}
 # ]
 
@@ -25,15 +25,19 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/dudul_frappe_template/css/dudul_frappe_template.css"
-# app_include_js = "/assets/dudul_frappe_template/js/dudul_frappe_template.js"
+app_include_css = "/assets/dulnext/css/app.min.css"
+app_include_js = "/assets/dulnext/js/app.min.js"
+
+node_modules = {
+    "joi": {"js": ["assets/dulnext/node_modules/joi/dist/joi-browser.min.js"]}
+}
 
 # include js, css files in header of web template
-# web_include_css = "/assets/dudul_frappe_template/css/dudul_frappe_template.css"
-# web_include_js = "/assets/dudul_frappe_template/js/dudul_frappe_template.js"
+web_include_css = "/assets/dulnext/css/portal.min.css"
+web_include_js = "/assets/dulnext/js/portal.min.js"
 
 # include custom scss in every website theme (without file extension ".scss")
-# website_theme_scss = "dudul_frappe_template/public/scss/website"
+# website_theme_scss = "dulnext/public/scss/website"
 
 # include js, css files in header of web form
 # webform_include_js = {"doctype": "public/js/doctype.js"}
@@ -51,7 +55,7 @@ app_license = "mit"
 # Svg Icons
 # ------------------
 # include app icons in desk
-# app_include_icons = "dudul_frappe_template/public/icons.svg"
+# app_include_icons = "dulnext/public/icons.svg"
 
 # Home Pages
 # ----------
@@ -64,6 +68,11 @@ app_license = "mit"
 # 	"Role": "home_page"
 # }
 
+website_context = {
+    "favicon": "/assets/dulnext/images/dulnext-favicon.svg",
+    "splash_image": "/assets/dulnext/images/dulnext-logo.svg",
+}
+
 # Generators
 # ----------
 
@@ -75,43 +84,44 @@ app_license = "mit"
 
 # add methods and filters to jinja environment
 # jinja = {
-# 	"methods": "dudul_frappe_template.utils.jinja_methods",
-# 	"filters": "dudul_frappe_template.utils.jinja_filters"
+# 	"methods": "dulnext.utils.jinja_methods",
+# 	"filters": "dulnext.utils.jinja_filters"
 # }
 
 # Installation
 # ------------
 
-# before_install = "dudul_frappe_template.install.before_install"
-# after_install = "dudul_frappe_template.install.after_install"
+# before_install = "dulnext.install.before_install"
+after_install = "dulnext.setup.install.after_install"
+
 
 # Uninstallation
 # ------------
 
-# before_uninstall = "dudul_frappe_template.uninstall.before_uninstall"
-# after_uninstall = "dudul_frappe_template.uninstall.after_uninstall"
+# before_uninstall = "dulnext.uninstall.before_uninstall"
+# after_uninstall = "dulnext.uninstall.after_uninstall"
 
 # Integration Setup
 # ------------------
 # To set up dependencies/integrations with other apps
 # Name of the app being installed is passed as an argument
 
-# before_app_install = "dudul_frappe_template.utils.before_app_install"
-# after_app_install = "dudul_frappe_template.utils.after_app_install"
+# before_app_install = "dulnext.utils.before_app_install"
+# after_app_install = "dulnext.utils.after_app_install"
 
 # Integration Cleanup
 # -------------------
 # To clean up dependencies/integrations with other apps
 # Name of the app being uninstalled is passed as an argument
 
-# before_app_uninstall = "dudul_frappe_template.utils.before_app_uninstall"
-# after_app_uninstall = "dudul_frappe_template.utils.after_app_uninstall"
+# before_app_uninstall = "dulnext.utils.before_app_uninstall"
+# after_app_uninstall = "dulnext.utils.after_app_uninstall"
 
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
 
-# notification_config = "dudul_frappe_template.notifications.get_notification_config"
+# notification_config = "dulnext.notifications.get_notification_config"
 
 # Permissions
 # -----------
@@ -150,39 +160,39 @@ app_license = "mit"
 
 # scheduler_events = {
 # 	"all": [
-# 		"dudul_frappe_template.tasks.all"
+# 		"dulnext.tasks.all"
 # 	],
 # 	"daily": [
-# 		"dudul_frappe_template.tasks.daily"
+# 		"dulnext.tasks.daily"
 # 	],
 # 	"hourly": [
-# 		"dudul_frappe_template.tasks.hourly"
+# 		"dulnext.tasks.hourly"
 # 	],
 # 	"weekly": [
-# 		"dudul_frappe_template.tasks.weekly"
+# 		"dulnext.tasks.weekly"
 # 	],
 # 	"monthly": [
-# 		"dudul_frappe_template.tasks.monthly"
+# 		"dulnext.tasks.monthly"
 # 	],
 # }
 
 # Testing
 # -------
 
-# before_tests = "dudul_frappe_template.install.before_tests"
+# before_tests = "dulnext.install.before_tests"
 
 # Overriding Methods
 # ------------------------------
 #
 # override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "dudul_frappe_template.event.get_events"
+# 	"frappe.desk.doctype.event.event.get_events": "dulnext.event.get_events"
 # }
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
 # override_doctype_dashboards = {
-# 	"Task": "dudul_frappe_template.task.get_dashboard_data"
+# 	"Task": "dulnext.task.get_dashboard_data"
 # }
 
 # exempt linked doctypes from being automatically cancelled
@@ -196,13 +206,13 @@ app_license = "mit"
 
 # Request Events
 # ----------------
-# before_request = ["dudul_frappe_template.utils.before_request"]
-# after_request = ["dudul_frappe_template.utils.after_request"]
+# before_request = ["dulnext.utils.before_request"]
+# after_request = ["dulnext.utils.after_request"]
 
 # Job Events
 # ----------
-# before_job = ["dudul_frappe_template.utils.before_job"]
-# after_job = ["dudul_frappe_template.utils.after_job"]
+# before_job = ["dulnext.utils.before_job"]
+# after_job = ["dulnext.utils.after_job"]
 
 # User Data Protection
 # --------------------
@@ -232,7 +242,7 @@ app_license = "mit"
 # --------------------------------
 
 # auth_hooks = [
-# 	"dudul_frappe_template.auth.validate"
+# 	"dulnext.auth.validate"
 # ]
 
 # Automatically update python controller files with type annotations for this app.
@@ -241,4 +251,3 @@ app_license = "mit"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
