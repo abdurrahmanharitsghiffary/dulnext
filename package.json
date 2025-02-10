@@ -5,6 +5,6 @@
     "contributors": ["abdmanharitsghiffary"],
     "devDependencies": {},
     "dependencies": {
-      "onscan.js": "^1.5.2"
+      "joi": "^17.13.3"
+    }
 }
-  }
