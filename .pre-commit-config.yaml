@@ -1,6 +1,5 @@
 default_stages:
   - pre-commit
-exclude: .git
 fail_fast: false
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
