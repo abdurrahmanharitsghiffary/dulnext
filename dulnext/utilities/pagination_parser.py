@@ -8,7 +8,8 @@ class ParsePaginationReturn(BaseModel):
     page: int
 
 
-# When we click filters in frappe they will not pass the page_length so its not available or None
+# When we click filters in frappe they will not pass the page_length
+# so its not available or None
 
 
 def parse_pagination(args):

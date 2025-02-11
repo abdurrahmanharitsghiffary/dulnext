@@ -1,6 +1,7 @@
 # A controller can only inherit directly from Document
 # multiple inheritance with Document is not supported.
-# To work around this, we use a custom function and override the method directly in the controller API.
+# To work around this, we use a custom function
+# and override the method directly in the controller API.
 
 from frappe.model import optional_fields
 from frappe.model.document import Document

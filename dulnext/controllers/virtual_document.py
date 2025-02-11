@@ -1,4 +1,5 @@
 from frappe.model.document import Document
+
 from dulnext.utilities.virtual import validate_doctype_without_select
 
 

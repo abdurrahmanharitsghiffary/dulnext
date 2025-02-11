@@ -70,7 +70,7 @@ web_include_js = ["/assets/dulnext/js/portal.min.js"]
 
 website_context = {
     "favicon": "/assets/dulnext/images/dulnext-favicon.svg",
-    "splash_image": "/assets/dulnext/images/dulnext-logo.png",
+    "splash_image": "/assets/dulnext/images/pop-cat.jpg",
 }
 
 # Generators
@@ -245,7 +245,8 @@ after_install = "dulnext.setup.install.after_install"
 # 	"dulnext.auth.validate"
 # ]
 
-# Automatically update python controller files with type annotations for this app.
+# Automatically update python controller files
+# with type annotations for this app.
 # export_python_type_annotations = True
 
 # default_log_clearing_doctypes = {

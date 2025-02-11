@@ -1,5 +1,5 @@
-from pydantic import BaseModel
 import frappe
+from pydantic import BaseModel
 
 
 # Sample ENV Variable from site-settings.json
