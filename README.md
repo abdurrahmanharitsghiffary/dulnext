@@ -27,7 +27,8 @@ The project follows the structure below:
 To set up and develop this project, please refer to the following guides:
 
 - **Installation Guide**: Learn how to install and configure the project using frappe-bench in our [Installation Guide](./docs/installation.md).
-- **Best Practices**: For best practices on working with Virtual Doctypes, refer to our [Best Practices](./docs/best-practices.md).
+- **Tutorial**: For best practices on working with Virtual Doctypes, please refer to our [comprehensive tutorial](./TUTORIAL.md).
+
 These documents cover everything from prerequisites and setup to advanced usage and recommended conventions for Virtual Doctypes.
 
 ## Disclaimer
