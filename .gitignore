@@ -16,3 +16,4 @@ dist/
 .idea/
 .vscode/
 .backportrc.json
+.mypy_cache
