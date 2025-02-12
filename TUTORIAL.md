@@ -55,27 +55,27 @@ All docfield names should adhere to the following structure:
 - **[dot if nested]**: For nested fields, replace the period (.) with the string dot.
 
 Example:
-A nested field `name.first_name` becomes `datadfqnamedotifirst_name` if the field type is data.
+A nested field `name.first_name` becomes `datadfqnamedotfirst_name` if the field type is data.
 
 - **Nested Fields**:
 For nested fields (e.g., `name.first_name`), replace the dot (.) with the string dot since Frappe will remove the actual dot.
 **Example**:
 
-- `name.first_name` becomes `datadfqnamedotifirst_name`
-- `name.last_name` becomes `datadfqnamedotlast_name`
+  - `name.first_name` becomes `datadfqnamedotfirst_name`
+  - `name.last_name` becomes `datadfqnamedotlast_name`
 
 - Array Fields:
 For fields that are arrays of strings (e.g., `list_of_family_names`), use the prefix `idxspqdatadfq` to mark them as such.
 **Example**:
 
-- `list_of_family_names` becomes `idxspqdatadfqlist_of_family_names`
+  - `list_of_family_names` becomes `idxspqdatadfqlist_of_family_names`
 The values in these fields will be displayed as comma-separated strings (e.g., `"sample, sampletwo, sample3"`).
 While a multi-select table might be a more robust solution for handling arrays, this simple naming convention works well for basic scenarios.
 - Simple Fields:
 For standard fields (e.g., `age`), simply prefix with `intdfq`.
-Example:
+**Example**:
 
-- `age` becomes `datadfqage`
+  - `age` becomes `datadfqage`
 
 ## Adding Custom Field Names in the Doctype
 
