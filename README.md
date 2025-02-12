@@ -27,6 +27,10 @@ The project follows the structure below:
 To learn how to set up and develop this project, check out the [Tutorial Guide](./TUTORIAL.md).
 This guide covers installation, configuration, and best practices for working with Virtual Doctypes.
 
+## Disclaimer
+
+**Dulnext** is an independent project and is not affiliated with, endorsed by, or associated with **ERPNext**, **Frappe Technologies**, or any of their products. The name **"Dulnext"** was inspired by **ERPNext** but is a separate and **standalone project**. All trademarks, product names, and logos mentioned are the property of their respective owners.
+
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](./license.txt) file for more information.
