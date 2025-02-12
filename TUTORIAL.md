@@ -38,28 +38,42 @@ For the above response, you should create two Virtual Doctypes:
 
 When designing the `Person` doctype, follow these naming conventions for your Docfields:
 
-- **Field Prefix**:
-All field names should begin with the prefix `df`.
+### Docfield Naming Structure
+
+All docfields should adhere to the following structure:
+
+```bash
+{special_type + "sp"}{docfield_type + "df"}{fieldname}[dot if nested]
+```
+
+- **special_type**: In addition to the standard naming conventions, a field name may include a special type indicator. For example, use `idx` for an array of strings, or `sp` for a custom/special type that is managed by our system. For a complete reference of available special types, please refer to the [Special Type Documentation](./docs/special-type.md).
+- **docfield_type**: Immediately after the prefix, specify the field type (e.g., data, link, table, check, etc.). Refer to this documentation for complete field type [frappe docfield](https://docs.frappe.io/framework/user/en/basics/doctypes/docfield).
+- **df**: Every field name starts with the prefix `df`.
+- **fieldname**: This is the actual name of the field.
+- **[dot if nested]**: For nested fields, replace the period (.) with the string dot.
+
+Example:
+A nested field `name.first_name` becomes `datadfnamedotifirst_name` if the field type is data.
 
 - **Nested Fields**:
 For nested fields (e.g., `name.first_name`), replace the dot (.) with the string dot since Frappe will remove the actual dot.
 **Example**:
 
-- `name.first_name` becomes `dfnamedotifirst_name`
-- `name.last_name` becomes `dfnamedotlast_name`
+- `name.first_name` becomes `datadfnamedotifirst_name`
+- `name.last_name` becomes `datadfnamedotlast_name`
 
 - Array Fields:
-For fields that are arrays of strings (e.g., `list_of_family_names`), use the prefix `idxdf` to mark them as such.
+For fields that are arrays of strings (e.g., `list_of_family_names`), use the prefix `idxspdatadf` to mark them as such.
 **Example**:
 
-- `list_of_family_names` becomes `idxdflist_of_family_names`
+- `list_of_family_names` becomes `idxspdatadflist_of_family_names`
 The values in these fields will be displayed as comma-separated strings (e.g., `"sample, sampletwo, sample3"`).
 While a multi-select table might be a more robust solution for handling arrays, this simple naming convention works well for basic scenarios.
 - Simple Fields:
-For standard fields (e.g., `age`), simply prefix with `df`.
+For standard fields (e.g., `age`), simply prefix with `intdf`.
 Example:
 
-- `age` becomes `dfage`
+- `age` becomes `datadfage`
 
 ## Adding Custom Field Names in the Doctype
 
