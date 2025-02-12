@@ -33,4 +33,4 @@ This guide covers installation, configuration, and best practices for working wi
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](./license.txt) file for more information.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more information.
