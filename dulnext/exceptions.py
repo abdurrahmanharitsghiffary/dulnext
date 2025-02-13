@@ -1,0 +1,5 @@
+from frappe.exceptions import ValidationError
+
+
+class NotFoundException(ValidationError):
+    pass

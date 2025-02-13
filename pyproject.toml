@@ -1,7 +1,7 @@
 [project]
 name = "dulnext"
 authors = [
-    { name = "abdmanharits@gmail.com", email = "abdmanharits@gmail.com" },
+    { name = "Abdurrahman Harits Ghiffary", email = "abdmanharits@gmail.com" },
 ]
 description = "Frappe Template Created By Myself"
 requires-python = ">=3.10"
