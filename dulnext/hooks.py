@@ -1,5 +1,5 @@
 app_name = "dulnext"
-app_title = "Dudul Frappe Template"
+app_title = "Dulnext"
 app_publisher = "Abdurrahman Harits GHiffary"
 app_description = "Frappe Template Created By Myself"
 app_email = "abdmanharits@gmail.com"
