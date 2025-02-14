@@ -155,37 +155,36 @@ When designing the `Person` doctype, follow these naming conventions for your Do
 All docfield names should adhere to the following structure:
 
 ```bash
-{special_type + "spq"}{docfield_type + "dfq"}{fieldname}[dot if nested]
+{"dfq"}{special_type + "spq"}{fieldname}[dot if nested]
 ```
 
-- **special_type**: In addition to the standard naming conventions, a field name may include a special type indicator. For example, use `idx` for an array of strings, `spq` is the **suffix for a custom/special** type that is managed by our system. For a complete reference of available special types, please refer to the [Special Type Documentation](./docs/special-type.md), **special_type** is **optional** you can use it or not based on your requirements.
-- **docfield_type**: Placed before the suffix, specify the field type (e.g., data, link, table, check, etc.). Refer to this documentation for complete field type [Frappe Docfield](https://docs.frappe.io/framework/user/en/basics/doctypes/docfield).
 - **dfq**: Every **docfield_type** ends with the suffix `dfq`.
+- **special_type**: In addition to the standard naming conventions, a field name may include a special type indicator. For example, use `idx` for an array of strings, `spq` is the **suffix for a custom/special** type that is managed by our system. For a complete reference of available special types, please refer to the [Special Type Documentation](./docs/special-type.md), **special_type** is **optional** you can use it or not based on your requirements.
 - **fieldname**: This is the actual name of the field.
 - **[dot if nested]**: For nested fields, replace the period (.) with the string dot.
 
 Example:
-A nested field `name.first_name` becomes `datadfqnamedotfirst_name` if the field type is data.
+A nested field `name.first_name` becomes `dfqnamedotfirst_name` if the field type is data.
 
 - **Nested Fields**:
 For nested fields (e.g., `name.first_name`), replace the dot (.) with the string dot since Frappe will remove the actual dot.
 **Example**:
 
-  - `name.first_name` becomes `datadfqnamedotfirst_name`
-  - `name.last_name` becomes `datadfqnamedotlast_name`
+  - `name.first_name` becomes `dfqnamedotfirst_name`
+  - `name.last_name` becomes `dfqnamedotlast_name`
 
 - Array Fields:
-For fields that are arrays of strings (e.g., `list_of_family_names`), use the prefix `idxspqdatadfq` to mark them as such.
+For fields that are arrays of strings (e.g., `list_of_family_names`), use the prefix `dfqidxspq` to mark them as such.
 **Example**:
 
-  - `list_of_family_names` becomes `idxspqdatadfqlist_of_family_names`
+  - `list_of_family_names` becomes `dfqidxspqlist_of_family_names`
 The values in these fields will be displayed as comma-separated strings (e.g., `"sample, sampletwo, sample3"`).
 While a multi-select table might be a more robust solution for handling arrays, this simple naming convention works well for basic scenarios.
 - Simple Fields:
-For standard fields (e.g., `age`), simply prefix with `intdfq`.
+For standard fields (e.g., `age`), simply prefix with `dfq`.
 **Example**:
 
-  - `age` becomes `datadfqage`
+  - `age` becomes `dfqage`
 
 ### Adding Custom Field Names in the Doctype
 
