@@ -17,3 +17,8 @@ dist/
 .vscode/
 .backportrc.json
 .mypy_cache
+
+.env.*
+.env
+!.env.example
+!.env.sample

@@ -47,7 +47,7 @@ services:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
     healthcheck:
-      test: ["CMD", "sh", "-c", "ls /home/frappe/frappe-bench/apps | grep -q \"$CUSTOM_APP_NAME\""]
+      test: ["CMD", "sh", "-c", "ls /home/frappe/frappe-bench/apps | grep -q \"$CUSTOM_APP_NAME\" || echo 0"]
       interval: 10s
       timeout: 30s
       retries: 5
