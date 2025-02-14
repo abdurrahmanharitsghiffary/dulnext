@@ -51,9 +51,7 @@ def add_standard_navbar_items():
     navbar_settings.set("help_dropdown", [])
 
     for item in erpnext_navbar_items:
-        current_labels = [
-            item.get("item_label") for item in current_navbar_items
-        ]
+        current_labels = [item.get("item_label") for item in current_navbar_items]
         if item.get("item_label") not in current_labels:
             navbar_settings.append("help_dropdown", item)
 
@@ -89,9 +87,7 @@ def create_default_roles():
 
 def add_permission_to_role(role, doctype):
     """Grant full access to synapsefi_sample for a role"""
-    if not frappe.db.exists(
-        "Custom DocPerm", {"role": role, "parent": doctype}
-    ):
+    if not frappe.db.exists("Custom DocPerm", {"role": role, "parent": doctype}):
         docperm = frappe.new_doc("Custom DocPerm")
         docperm.parent = doctype
         docperm.parenttype = "DocType"
@@ -118,9 +114,7 @@ def create_default_role_profiles():
 
 
 def change_app_logo():
-    frappe.db.set_single_value(
-        "Navbar Settings", "app_logo", "/assets/dulnext/images/pop-cat.jpg"
-    )
+    frappe.db.set_single_value("Navbar Settings", "app_logo", "/assets/dulnext/images/pop-cat.jpg")
 
 
 DEFAULT_ROLES = [

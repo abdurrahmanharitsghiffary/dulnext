@@ -28,9 +28,7 @@ app_license = "mit"
 app_include_css = ["/assets/dulnext/css/app.min.css"]
 app_include_js = ["/assets/dulnext/js/app.min.js"]
 
-node_modules = {
-    "joi": {"js": ["/assets/dulnext/node_modules/joi/dist/joi-browser.min.js"]}
-}
+node_modules = {"joi": {"js": ["/assets/dulnext/node_modules/joi/dist/joi-browser.min.js"]}}
 
 # include js, css files in header of web template
 web_include_css = ["/assets/dulnext/css/portal.min.css"]

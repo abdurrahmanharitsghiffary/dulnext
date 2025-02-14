@@ -4,11 +4,11 @@ import frappe
 from frappe.model.document import Document
 from frappe.types import DF
 
-from dulnext.exceptions import NotFoundException
+from dulnext.exceptions import DependencyNotInjectedException, NotFoundException
 from dulnext.mixins.singleton import SingletonMixin
 
 
-class VirtualModel(SingletonMixin):
+class VirtualDAO(SingletonMixin):
     """All Virtual Doctype should derive this class"""
 
     # Primary Key of the model
@@ -20,6 +20,11 @@ class VirtualModel(SingletonMixin):
         self.name = name
 
     @staticmethod
+    def get_item_count(*args, **kwargs):
+        """Get model instances counts."""
+        raise NotImplementedError("Method not implemented.")
+
+    @staticmethod
     def find_all(*args, **kwargs):
         """Finds all model instances matching the given filters."""
         raise NotImplementedError("Method not implemented.")
@@ -28,8 +33,12 @@ class VirtualModel(SingletonMixin):
         """Deletes the current model instance from the database or API."""
         raise NotImplementedError("Method not implemented.")
 
-    def save(self, *args, **kwargs):
-        """Inserts or updates the model instance in the database or API."""
+    def update(self, *args, **kwargs):
+        """Updates the model instance in the database or API."""
+        raise NotImplementedError("Method not implemented.")
+
+    def insert(self, *args, **kwargs):
+        """Inserts the model instance in the database or API."""
         raise NotImplementedError("Method not implemented.")
 
     @staticmethod
@@ -47,9 +56,7 @@ class VirtualModel(SingletonMixin):
         if self.name:
             self.set_cached_property("docstatus", "1")
         else:
-            raise NotFoundException(
-                f"Entity {self.doctype} with id: {self.name} not found."
-            )
+            raise NotFoundException(f"Entity {self.doctype} with id: {self.name} not found.")
 
     def cancel(self):
         """Mark docstatus of the model to cancelled or '2'"""
@@ -57,9 +64,7 @@ class VirtualModel(SingletonMixin):
             self.set_cached_property("docstatus", "2")
 
         else:
-            raise NotFoundException(
-                f"Entity {self.doctype} with id: {self.name} not found."
-            )
+            raise NotFoundException(f"Entity {self.doctype} with id: {self.name} not found.")
 
     def draft(self):
         """Mark docstatus of the model to cancelled or '0'"""
@@ -68,9 +73,7 @@ class VirtualModel(SingletonMixin):
             self.set_cached_property("docstatus", "0")
 
         else:
-            raise NotFoundException(
-                f"Entity {self.doctype} with id: {self.name} not found."
-            )
+            raise NotFoundException(f"Entity {self.doctype} with id: {self.name} not found.")
 
     def is_submitted(self):
         """Determine if the model's docstatus is submitted."""
@@ -134,7 +137,7 @@ class CommentController:
         self.fieldname = fieldname
         self.doctype = doctype
 
-    def get(self):
+    def get_comments(self):
         filters = [
             ["reference_name", "=", self.name],
             ["content", "=", "Comment"],
@@ -142,12 +145,12 @@ class CommentController:
 
         return frappe.db.get_list("Comment", filters=filters, order_by="modified desc")
 
-    def append_value(self, new_value: str):
+    def append_comment(self, new_comment: str):
         comment_doc = frappe.get_doc(
             {
                 "doctype": "Comment",
                 "comment_type": "Comment",
-                "content": new_value,
+                "content": new_comment,
                 "reference_doctype": self.doctype,
                 "reference_name": self.name,
             }
@@ -169,7 +172,7 @@ class LikeController:
         self.fieldname = fieldname
         self.doctype = doctype
 
-    def get(self):
+    def get_likes(self):
         filters = [
             ["reference_name", "=", self.name],
             ["comment_type", "=", "Like"],
@@ -191,9 +194,7 @@ class LikeController:
         comment_doc.insert(ignore_permissions=True)
 
 
-class VirtualController(
-    Filterable, Paginated, CommentController, LikeController, Document
-):
+class VirtualController(Filterable, Paginated, CommentController, LikeController, Document):
     """
     VirtualController is an abstract base class that serves as a contract for derived classes.
     Classes inheriting from VirtualController, such as RestController and DatabaseController.
@@ -207,15 +208,19 @@ class VirtualController(
     modified: DF.Datetime
     modified_by: DF.Link
     idx: DF.Int
-    model_creator: Optional[VirtualModel] = None
+    _virtual_dao: Optional[VirtualDAO] = None
 
-    def __init__(self, model_creator: VirtualModel, *args, **kwargs):
+    def __init__(self, virtual_dao: VirtualDAO, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.model_creator = model_creator
+        self._virtual_dao = virtual_dao
 
-    def get_virtual_model(self):
+    def get_virtual_dao(self) -> VirtualDAO:
         # Return the cached virtual model
-        return self.model_creator(self.doctype, self.name)
+
+        if not self._virtual_dao:
+            raise DependencyNotInjectedException("Failed to get the VirtualDAO")
+
+        return self._virtual_dao
 
     def validate(disable_select_validation=False):
         pass
@@ -233,3 +238,6 @@ class VirtualController(
         while the dictionary itself will be used when interacting with the database or REST API.
         """
         pass
+
+    def get_liked_by(self):
+        return self.get_likes()
