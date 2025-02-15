@@ -1,0 +1,15 @@
+name: Dulnext Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Echo Hello World
+        run: |
+          echo "Hello World"
