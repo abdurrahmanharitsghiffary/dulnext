@@ -158,7 +158,7 @@ All docfield names should adhere to the following structure:
 {"dfq"}{special_type + "spq"}{fieldname}[dot if nested]
 ```
 
-- **dfq**: Every **docfield_type** ends with the suffix `dfq`.
+- **dfq**: Every **docfield_type** starts with the prefix `dfq`.
 - **special_type**: In addition to the standard naming conventions, a field name may include a special type indicator. For example, use `idx` for an array of strings, `spq` is the **suffix for a custom/special** type that is managed by our system. For a complete reference of available special types, please refer to the [Special Type Documentation](./docs/special-type.md), **special_type** is **optional** you can use it or not based on your requirements.
 - **fieldname**: This is the actual name of the field.
 - **[dot if nested]**: For nested fields, replace the period (.) with the string dot.

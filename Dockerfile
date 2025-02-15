@@ -129,13 +129,16 @@ COPY --from=builder --chown=frappe:frappe /home/frappe/frappe-bench /home/frappe
 
 WORKDIR /home/frappe/frappe-bench
 
+ARG CUSTOM_APP_NAME=${CUSTOM_APP_NAME:-dulnext}
+ARG CUSTOM_APP_REPO=${CUSTOM_APP_REPO:-https://github.com/abdurrahmanharitsghiffary/dulnext}
+ARG CUSTOM_APP_BRANCH=${CUSTOM_APP_BRANCH:-main}
+
+
 RUN cd /home/frappe/frappe-bench && \
-    bench get-app --branch=main dulnext https://github.com/abdurrahmanharitsghiffary/dulnext
+    bench get-app --branch=${CUSTOM_APP_BRANCH} ${CUSTOM_APP_NAME} ${CUSTOM_APP_REPO}
 
-RUN cd /home/frappe/frappe-bench/apps/dulnext && \
+RUN cd /home/frappe/frappe-bench/apps/${CUSTOM_APP_NAME} && \
     git pull
-
-RUN cd /home/frappe/frappe-bench/sites && rm -rf assets
 
 VOLUME [ \
     "/home/frappe/frappe-bench/sites", \

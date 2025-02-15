@@ -1,7 +1,28 @@
+x-frappe-default-site-env: &x-frappe-default-site-env
+  FRAPPE_DEFAULT_SITE_DB: ${FRAPPE_DEFAULT_SITE_DB}
+  FRAPPE_DEFAULT_SITE_DB_PASSWORD: ${FRAPPE_DEFAULT_SITE_DB_PASSWORD}
+  FRAPPE_DEFAULT_SITE_ADMINISTRATOR_PASSWORD: ${FRAPPE_DEFAULT_SITE_ADMINISTRATOR_PASSWORD}
+  # Only works on Frappe Version 16
+  # FRAPPE_DEFAULT_SITE_DB_USER: ${FRAPPE_DEFAULT_SITE_DB_USER}
+
+x-environment-common: &x-environment-common
+  DB_HOST: db
+  DB_PORT: "5432"
+  REDIS_CACHE: redis-cache:6379
+  REDIS_QUEUE: redis-queue:6379
+  SOCKETIO_PORT: "9000"
+  CUSTOM_APP_NAME: ${CUSTOM_APP_NAME:-dulnext}
+
+
+x-postgres-env: &x-postgres-env
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  POSTGRES_USER: ${POSTGRES_USER}
+  POSTGRES_DB: ${POSTGRES_DB}
+
 x-bench-common: &x-bench-common
   build: .
   depends_on:
-    configurator:
+    create-site:
       condition: service_completed_successfully
   networks:
     - frappe_network
@@ -12,10 +33,12 @@ x-bench-common: &x-bench-common
     - sites:/home/frappe/frappe-bench/sites
     - logs:/home/frappe/frappe-bench/logs
   environment:
-    DB_HOST: db
-    DB_PORT: "3306"
-    MYSQL_ROOT_PASSWORD: admin
-    MARIADB_ROOT_PASSWORD: admin
+    <<:
+      - *x-postgres-env
+      - *x-environment-common
+      - *x-frappe-default-site-env
+
+
 
 services:
   backend:
@@ -39,27 +62,29 @@ services:
         bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
         bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
         bench set-config -gp socketio_port $$SOCKETIO_PORT;
-    environment:
-      DB_HOST: db
-      DB_PORT: "3306"
-      REDIS_CACHE: redis-cache:6379
-      REDIS_QUEUE: redis-queue:6379
-      SOCKETIO_PORT: "9000"
     volumes:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
+    environment:
+      <<: *x-environment-common
+    depends_on:
+      db:
+        condition: service_healthy
 
 
   create-site:
     <<: *x-bench-common
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
     entrypoint:
       - bash
       - -c
     command:
       - >
-        wait-for-it -t 120 db:3306;
-        wait-for-it -t 120 redis-cache:6379;
-        wait-for-it -t 120 redis-queue:6379;
+        wait-for-it -t 120 $$DB_HOST:$$DB_PORT;
+        wait-for-it -t 120 $$REDIS_CACHE;
+        wait-for-it -t 120 $$REDIS_QUEUE;
         export start=`date +%s`;
         until [[ -n `grep -hs ^ sites/common_site_config.json | jq -r ".db_host // empty"` ]] && \
           [[ -n `grep -hs ^ sites/common_site_config.json | jq -r ".redis_cache // empty"` ]] && \
@@ -73,34 +98,35 @@ services:
           fi
         done;
         echo "sites/common_site_config.json found";
-        sleep 20;
-        cat /home/frappe/frappe-bench/sites/apps.txt;
-        bench new-site --mariadb-user-host-login-scope='%' --admin-password=admin --db-root-username=root --db-root-password=admin --set-default frontend --install-app ${CUSTOM_APP_NAME};
+        bench new-site frontend --db-type=postgres --db-name=$$FRAPPE_DEFAULT_SITE_DB --db-password=$$FRAPPE_DEFAULT_SITE_DB_PASSWORD --db-host=$$DB_HOST --db-port=$$DB_PORT --db-root-username=$$POSTGRES_USER --db-root-password=$$POSTGRES_PASSWORD --admin-password=$$FRAPPE_DEFAULT_SITE_ADMINISTRATOR_PASSWORD --set-default --install-app $$CUSTOM_APP_NAME;
+        bench migrate;
+        bench clear-cache;
 
   db:
-    image: mariadb:10.6
+    image: postgres:15
     networks:
       - frappe_network
-    healthcheck:
-      test: mysqladmin ping -h localhost --password=admin
-      interval: 1s
-      retries: 20
     deploy:
       restart_policy:
         condition: on-failure
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-      - --skip-character-set-client-handshake
-      - --skip-innodb-read-only-compressed # Temporary fix for MariaDB 10.6
     environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MARIADB_ROOT_PASSWORD: admin
+      <<:
+      - *x-postgres-env
+      - *x-frappe-default-site-env
     volumes:
-      - db-data:/var/lib/mysql
+      - db-data:/var/lib/postgresql/data
+      # - ./resources/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "$$POSTGRES_USER", "-d", "$$POSTGRES_DB"]
+      interval: 10s
+      retries: 20
+      start_period: 5s
 
   frontend:
     <<: *x-bench-common
+    depends_on:
+      backend:
+        condition: service_started
     command:
       - nginx-entrypoint.sh
     environment:
@@ -113,11 +139,7 @@ services:
       PROXY_READ_TIMEOUT: 120
       CLIENT_MAX_BODY_SIZE: 50m
     ports:
-      - mode: ingress
-        target: 8080
-        published: "8080"
-        protocol: tcp
-
+      - "8080:8080"
   queue-long:
     <<: *x-bench-common
 
