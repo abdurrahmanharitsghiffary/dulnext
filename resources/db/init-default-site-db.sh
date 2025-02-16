@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+# Frappe default site database and user initializer
+
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" --port "$PGPORT" <<-EOSQL
 	CREATE USER $FRAPPE_DEFAULT_SITE_DB WITH ENCRYPTED '$FRAPPE_DEFAULT_SITE_DB_PASSWORD';
 	CREATE DATABASE $FRAPPE_DEFAULT_SITE_DB;

@@ -1,9 +1,2 @@
-from frappe.exceptions import ValidationError
-
-
-class NotFoundException(ValidationError):
-    pass
-
-
-class DependencyNotInjectedException(RuntimeError):
+class MissingDependencyError(Exception):
     pass

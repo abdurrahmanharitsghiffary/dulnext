@@ -116,7 +116,7 @@ services:
       - *x-frappe-default-site-env
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./resources/db/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      - ./resources/db/init-default-site-db.sh:/docker-entrypoint-initdb.d/init-default-site-db.sh
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "$$POSTGRES_USER", "-d", "$$POSTGRES_DB"]
       interval: 10s
