@@ -67,8 +67,8 @@ RUN useradd -ms /bin/bash frappe \
     && chown -R frappe:frappe /var/lib/nginx \
     && chown -R frappe:frappe /run/nginx.pid
 
-COPY resources/nginx-template.conf /templates/nginx/frappe.conf.template
-COPY resources/nginx-entrypoint.sh /usr/local/bin/nginx-entrypoint.sh
+COPY resources/www/nginx-template.conf /templates/nginx/frappe.conf.template
+COPY resources/www/nginx-entrypoint.sh /usr/local/bin/nginx-entrypoint.sh
 
 RUN chmod +x /usr/local/bin/nginx-entrypoint.sh
 
