@@ -114,7 +114,7 @@ def create_default_role_profiles():
 
 
 def change_app_logo():
-    frappe.db.set_single_value("Navbar Settings", "app_logo", "/assets/dulnext/images/pop-cat.jpg")
+    frappe.db.set_single_value("Navbar Settings", "app_logo", "/assets/dulnext/images/dulnext-logo.jpg")
 
 
 DEFAULT_ROLES = [

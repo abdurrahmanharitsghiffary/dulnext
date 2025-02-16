@@ -68,7 +68,7 @@ web_include_js = ["/assets/dulnext/js/portal.min.js"]
 
 website_context = {
     "favicon": "/assets/dulnext/images/dulnext-favicon.svg",
-    "splash_image": "/assets/dulnext/images/pop-cat.jpg",
+    "splash_image": "/assets/dulnext/images/dulnext-logo.jpg",
 }
 
 # Generators
