@@ -6,10 +6,8 @@ from frappe.types import DF
 
 from dulnext.exceptions import MissingDependencyError
 from dulnext.models.comment import CommentController
-from dulnext.models.filterable import Filterable
 from dulnext.models.like import LikeController
-from dulnext.models.paginated import Paginated
-from dulnext.models.virtual_dao import VirtualDAO
+from dulnext.models.virtual_context import VirtualContext
 
 
 class VirtualController(CommentController, LikeController, Document):
@@ -26,54 +24,32 @@ class VirtualController(CommentController, LikeController, Document):
     modified: DF.Datetime
     modified_by: DF.Link
     idx: DF.Int
-    _virtual_dao: Optional[VirtualDAO] = None
-    _filterable: Optional[Filterable] = None
-    _paginated: Optional[Paginated] = None
+    _virtual_context: Optional[VirtualContext] = None
 
     def __init__(
         self,
-        virtual_dao: VirtualDAO,
-        paginated: Paginated,
-        filterable: Filterable,
+        virtual_context: VirtualContext,
         *args,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
-        self._filterable = filterable
-        self._paginated = paginated
-        self._virtual_dao = virtual_dao
+        self._virtual_context = virtual_context
 
-    def get_filter_mapper(self) -> Filterable:
+    def get_virtual_context(self) -> VirtualContext:
         # Return the cached virtual model
 
-        if not self._filterable:
-            raise MissingDependencyError("Failed to get the Filterable")
+        if not self._virtual_context:
+            raise MissingDependencyError("Failed to get the Context")
 
-        return self._filterable
-
-    def get_pagination_mapper(self) -> Paginated:
-        # Return the cached virtual model
-
-        if not self._paginated:
-            raise MissingDependencyError("Failed to get the Paginated")
-
-        return self._paginated
-
-    def get_virtual_dao(self) -> VirtualDAO:
-        # Return the cached virtual model
-
-        if not self._virtual_dao:
-            raise MissingDependencyError("Failed to get the VirtualDAO")
-
-        return self._virtual_dao
+        return self._virtual_context
 
     def map_enum(self) -> Optional[Dict[str, str]]:
         """
         This method maps enums and should return a dictionary of enums in the following format
 
         {
-                "ENUM1": "Enum description",
-                "ENUM2": "Another description"
+                        "ENUM1": "Enum description",
+                        "ENUM2": "Another description"
         }
 
         The enum descriptions will be displayed in the Options Select Docfield,

@@ -1,10 +1,11 @@
 from typing import Any, Dict
 
+from dulnext.mapper.virtual_mapper import VirtualMapper
 from dulnext.mixins.singleton import SingletonMixin
 
 
-class RestMapper(SingletonMixin):
-    def map_rest_to_doc(self, rest: Dict[str, Any], doc: Dict[str, Any], ignore_optional=False) -> Dict[str, Any]:
+class RestMapper(VirtualMapper, SingletonMixin):
+    def map_item_to_doc(self, item: Dict[str, Any], doc: Dict[str, Any], ignore_optional: bool = False) -> Dict[str, Any]:
         """Map the api response to doctype"""
 
         def process_key_value(key: str, value: Any, parent_key: str = ""):
@@ -22,14 +23,14 @@ class RestMapper(SingletonMixin):
                 # Normal field mapping with 'dfq' prefix
                 doc[f"dfq{full_key}"] = value
 
-        for key, value in rest.items():
+        for key, value in item.items():
             if ignore_optional and value is None:
                 continue
             process_key_value(key, value)
 
         return doc
 
-    def map_doc_to_rest(self, doc: Dict[str, Any], ignore_optional=False) -> Dict[str, Any]:
+    def map_doc_to_item(self, doc: Dict[str, Any], ignore_optional=False) -> Dict[str, Any]:
         """Map the doctype to api response"""
 
         original_doc: Dict[str, Any] = {}

@@ -1,8 +1,7 @@
-from typing import Any
+from typing import Any, Dict
 
 import frappe
 
-from dulnext.typings.pagination_options import PaginationOptions
 from dulnext.typings.virtual_dao import VirtualActionResponse, VirtualCountResponse, VirtualFindResponse, VirtuaListResponse
 
 
@@ -10,11 +9,11 @@ from dulnext.typings.virtual_dao import VirtualActionResponse, VirtualCountRespo
 class VirtualDAO[T, AR]:
     """This class is used for retrieve or getting the data either from Database or API"""
 
-    def get_item_count(self, filters: Any, pagination: PaginationOptions) -> VirtualCountResponse[AR]:
+    def get_item_count(self, filters: Any, pagination: Dict[str, Any]) -> VirtualCountResponse[AR]:
         """Get model instances counts."""
         raise NotImplementedError("Method not implemented.")
 
-    def find_all(self, filters: Any, pagination: PaginationOptions) -> VirtuaListResponse[T, AR]:
+    def find_all(self, filters: Any, pagination: Dict[str, Any]) -> VirtuaListResponse[T, AR]:
         """Finds all model instances matching the given filters."""
         raise NotImplementedError("Method not implemented.")
 
