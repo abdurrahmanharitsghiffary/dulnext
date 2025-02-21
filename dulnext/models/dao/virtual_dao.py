@@ -1,23 +1,24 @@
 from typing import Any, Dict
 
 import frappe
+from frappe.types import DF
 
 from dulnext.typings.virtual_dao import VirtualActionResponse, VirtualCountResponse, VirtualFindResponse, VirtuaListResponse
 
 
-# Just use dict for AR
+# Please just use dict for AR
 class VirtualDAO[T, AR]:
     """This class is used for retrieve or getting the data either from Database or API"""
 
-    def get_item_count(self, filters: Any, pagination: Dict[str, Any]) -> VirtualCountResponse[AR]:
+    def get_item_count(self, filters: Dict[str, Any], pagination: Dict[str, Any]) -> VirtualCountResponse[AR]:
         """Get model instances counts."""
         raise NotImplementedError("Method not implemented.")
 
-    def find_all(self, filters: Any, pagination: Dict[str, Any]) -> VirtuaListResponse[T, AR]:
+    def find_all(self, filters: Dict[str, Any], pagination: Dict[str, Any]) -> VirtuaListResponse[T, AR]:
         """Finds all model instances matching the given filters."""
         raise NotImplementedError("Method not implemented.")
 
-    def destroy(self) -> VirtualActionResponse[T, AR]:
+    def destroy(self, name: str) -> VirtualActionResponse[T, AR]:
         """Deletes the current model instance from the database or API."""
         raise NotImplementedError("Method not implemented.")
 
@@ -31,7 +32,7 @@ class VirtualDAO[T, AR]:
 
     def find_one(
         self,
-        filters: Any,
+        filters: Dict[str, Any],
     ) -> VirtualFindResponse[T, Any]:
         """Finds a single model instance matching the given filters."""
         raise NotImplementedError("Method not implemented.")
@@ -39,6 +40,15 @@ class VirtualDAO[T, AR]:
     def find_one_by_pk(self, name: str) -> VirtualFindResponse[T, Any]:
         """Finds a model instance by its primary key."""
         raise NotImplementedError("Method not implemented.")
+
+
+class VirtualDocstatus:
+    name: DF.Data
+    doctype: DF.Data
+
+    def __init__(self, name: DF.Data, doctype: DF.Data):
+        self.name = name
+        self.doctype = doctype
 
     def submit(self):
         """Mark docstatus of the model to submitted or '1'"""
@@ -70,16 +80,16 @@ class VirtualDAO[T, AR]:
 
         return self.get_cached_property("docstatus") == "2"
 
-    def get_cached_property(self, doctype: str, name: str, property: str):
+    def get_cached_property(self, property: str):
         """Get cached properties on RedisWrapper."""
 
-        property_key = f"{doctype}:{name}:{property}"
+        property_key = f"{self.doctype}:{self.name}:{property}"
 
         return frappe.cache.get(property_key)
 
-    def set_cached_property(self, doctype: str, name: str, property: str, value: str):
+    def set_cached_property(self, property: str, value: str):
         """Set cached properties on RedisWrapper."""
 
-        property_key = f"{doctype}:{name}:{property}"
+        property_key = f"{self.doctype}:{self.name}:{property}"
 
         return frappe.cache.set(property_key, value)

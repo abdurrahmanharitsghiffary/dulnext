@@ -182,9 +182,7 @@ after_install = "dulnext.setup.install.after_install"
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "dulnext.event.get_events"
-# }
+override_whitelisted_methods = {"frappe.desk.like.toggle_like": "dulnext.overrides.virtual_contract.desk.like.toggle_like"}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,

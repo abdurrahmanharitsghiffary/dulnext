@@ -1,12 +1,27 @@
-from typing import Any, Dict
+from typing import Any, Dict, Literal
 
 from dulnext.mapper.virtual_mapper import VirtualMapper
-from dulnext.mixins.singleton import SingletonMixin
+from dulnext.utilities import camel_to_snake, snake_to_camel
 
 
-class RestMapper(VirtualMapper, SingletonMixin):
-    def map_item_to_doc(self, item: Dict[str, Any], doc: Dict[str, Any], ignore_optional: bool = False) -> Dict[str, Any]:
+class RestMapper(VirtualMapper):
+    def __init__(
+        self,
+        convention: Literal["snakecase", "camelcase"] = "snakecase",
+        name_column: str = "id",
+    ):
+        super().__init__(convention, name_column)
+
+    def map_item_to_doc(
+        self,
+        item: Dict[str, Any],
+        doc: Dict[str, Any],
+        ignore_optional: bool = False,
+    ) -> Dict[str, Any]:
         """Map the api response to doctype"""
+        print(f"DOC: {doc}")
+
+        # Two way checking is a must
 
         def process_key_value(key: str, value: Any, parent_key: str = ""):
             """Recursively process nested fields and apply transformation rules."""
@@ -24,20 +39,34 @@ class RestMapper(VirtualMapper, SingletonMixin):
                 doc[f"dfq{full_key}"] = value
 
         for key, value in item.items():
+            snake_cased_key = key
+
+            if self.convention == "camelcase":
+                snake_cased_key = camel_to_snake(key)
+
             if ignore_optional and value is None:
                 continue
-            process_key_value(key, value)
+            if snake_cased_key == self.name_column:
+                doc["name"] = value
 
+            process_key_value(snake_cased_key, value)
+        print(f"DOC: {doc}")
         return doc
 
-    def map_doc_to_item(self, doc: Dict[str, Any], ignore_optional=False) -> Dict[str, Any]:
+    def map_doc_to_item(
+        self,
+        doc: Dict[str, Any],
+        ignore_optional=False,
+    ) -> Dict[str, Any]:
         """Map the doctype to api response"""
-
         original_doc: Dict[str, Any] = {}
 
         for key, value in doc.items():
-            if (ignore_optional and value is None) or not key.startswith("df"):
+            if (ignore_optional and value is None) or not key.startswith("dfq"):
                 continue
+
+            if key == self.name_column:
+                original_doc["name"] = value
 
             if key.startswith("dfqidxsp"):
                 # Convert back to an array of strings
@@ -49,6 +78,9 @@ class RestMapper(VirtualMapper, SingletonMixin):
             else:
                 clean_key = key  # Just in case there's a key that doesn't match the pattern
 
+            if self.convention == "camelcase":
+                clean_key = snake_to_camel(clean_key)
+
             keys = clean_key.split("dot")  # Handle nested keys
             ref = original_doc
 
@@ -58,5 +90,5 @@ class RestMapper(VirtualMapper, SingletonMixin):
                 ref = ref[part]
 
             ref[keys[-1]] = value  # Assign the final value
-
+        print(f"Original DOC: {original_doc}")
         return original_doc

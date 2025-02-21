@@ -2,9 +2,9 @@ from typing import Optional
 
 from dulnext.exceptions import MissingDependencyError
 from dulnext.mapper.virtual_mapper import VirtualMapper
-from dulnext.models.filterable import Filterable
-from dulnext.models.paginated import Paginated
-from dulnext.models.virtual_dao import VirtualDAO
+from dulnext.models.dao.virtual_dao import VirtualDAO
+from dulnext.models.filters.filterable import Filterable
+from dulnext.models.paginator.paginated import Paginated
 
 
 class VirtualContext:

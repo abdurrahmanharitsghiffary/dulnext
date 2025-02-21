@@ -1,19 +1,15 @@
-from typing import Optional
-
 import frappe
+from frappe.types import DF
 
 
 class LikeController:
     """Class for controlling like on Virtual Doctype"""
 
-    doctype: Optional[str] = None
-    name: Optional[str] = None
-    fieldname: Optional[str] = None
-    value: Optional[str] = None
+    doctype: DF.Data
+    name: DF.Data | None
 
-    def __init__(self, name: str, fieldname: str, doctype):
+    def __init__(self, name: DF.Data, doctype: DF.Data):
         self.name = name
-        self.fieldname = fieldname
         self.doctype = doctype
 
     def get_likes(self):
