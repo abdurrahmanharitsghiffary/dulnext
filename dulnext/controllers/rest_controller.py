@@ -79,8 +79,8 @@ class RestController(VirtualController):
             filterable = context.get_filter_mapper()
             dao = context.get_dao()
             rest_mapper = context.get_mapper()
-
-            pagination_options = PaginationOptions(page_length=args.get("per_page", "20"), start=args.get("start", "0"))
+            print(f"ARGS: {args}")
+            pagination_options = PaginationOptions(page_length=args.get("page_length", "20"), start=args.get("start", "0"))
 
             frappe_doc_filters = args.get("filters", {})
 
@@ -88,16 +88,36 @@ class RestController(VirtualController):
 
             mapped_filter = filterable.filters_mapper(filters=frappe_doc_filters)
 
+            request_filters = None
+            request_pagination = None
+
+            is_client_side_pagination = mapped_pagination.get("is_client_side_paginator")
+            is_client_side_filters = mapped_filter.get("is_client_side_filters")
+
+            if not is_client_side_filters:
+                request_filters = mapped_filter
+
+            if not is_client_side_pagination:
+                request_pagination = mapped_pagination
+
             response: VirtuaListResponse[Any, Any] = dao.find_all(
-                filters=(mapped_filter or frappe_doc_filters),
-                pagination=(mapped_pagination or {}),
+                filters=(request_filters or frappe_doc_filters),
+                pagination=(request_pagination or {}),
             )
 
             data = []
 
-            for item in response.data:
-                doc = rest_mapper.map_item_to_doc(item, {})
-                data.append(doc)
+            page_start = int(pagination_options.start)
+            page_end = page_start + int(pagination_options.page_length) - 1
+
+            print(f"Page Start: {page_start}")
+            print(f"Page End: {page_end}")
+
+            for idx, item in enumerate(response.data):
+                if is_client_side_pagination and not (page_start <= idx <= page_end):
+                    continue
+
+                data.append(rest_mapper.map_item_to_doc(item, {}))
 
             return data
 

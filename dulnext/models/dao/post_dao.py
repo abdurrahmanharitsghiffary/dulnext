@@ -17,8 +17,6 @@ class PostDAO(VirtualDAO):
 
         data = response.json()
 
-        print(f"Data: {data}")
-
         return VirtualCountResponse(actual_response=None, data=len(data))
 
     def find_all(self, filters: Any, pagination: Dict[str, Any]) -> VirtuaListResponse[PostEntity, Any]:
@@ -32,17 +30,11 @@ class PostDAO(VirtualDAO):
 
         data = response.json()
 
-        print(f"Data: {data}")
-
         return VirtuaListResponse(actual_response=None, data=data)
 
     def destroy(self, name: str) -> VirtualActionResponse[int, Any]:
         """Deletes the current model instance from the database or API."""
-        response = requests.delete("https://jsonplaceholder.typicode.com/posts/" + name)
-
-        data = response.json()
-
-        print(f"Response: {data}")
+        requests.delete("https://jsonplaceholder.typicode.com/posts/" + name)
 
         return VirtualActionResponse(actual_response=None, affected=1)
 
@@ -53,8 +45,6 @@ class PostDAO(VirtualDAO):
 
         data = response.json()
 
-        print(f"Response: {data}")
-
         return VirtualActionResponse(actual_response=None, affected=data)
 
     def insert(self, data: Entity) -> VirtualActionResponse[Entity, Any]:
@@ -63,8 +53,6 @@ class PostDAO(VirtualDAO):
         response = requests.post("https://jsonplaceholder.typicode.com/posts", data)
 
         data = response.json()
-
-        print(f"Response: {data}")
 
         return VirtualActionResponse(actual_response=None, affected=data)
 
@@ -78,8 +66,6 @@ class PostDAO(VirtualDAO):
 
         data = response.json()
 
-        print(f"Response: {data}")
-
         return VirtualFindResponse(data=data, actual_response=None)
 
     def find_one_by_pk(self, name: str) -> VirtualFindResponse[PostEntity, Any]:
@@ -87,7 +73,5 @@ class PostDAO(VirtualDAO):
         response = requests.get("https://jsonplaceholder.typicode.com/posts/" + name)
 
         data = response.json()
-
-        print(f"Response: {data}")
 
         return VirtualFindResponse(data=data, actual_response=None)
