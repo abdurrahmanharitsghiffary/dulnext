@@ -68,6 +68,9 @@ class RestModelMapper(VirtualModelMapper):
 
             value = get_nested(item, traversed_keys)
 
+            if docfieldmeta.fieldname == self.name_column:
+                doc["name"] = value
+
             if docfieldmeta.special_type == "idx" and isinstance(value, list):
                 value = ", ".join(value)
 

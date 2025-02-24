@@ -7,32 +7,32 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "dfqtitle",
-  "dfqid",
-  "dfqbody",
-  "dfquser_id"
+  "dfqdtatitle",
+  "dfqintid",
+  "dfqtxtbody",
+  "dfqdtauser_id"
  ],
  "fields": [
   {
-   "fieldname": "dfqtitle",
+   "fieldname": "dfqdtatitle",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Title"
   },
   {
-   "fieldname": "dfqid",
+   "fieldname": "dfqintid",
    "fieldtype": "Int",
    "in_list_view": 1,
    "label": "Post ID"
   },
   {
-   "fieldname": "dfqbody",
+   "fieldname": "dfqtxtbody",
    "fieldtype": "Text",
    "in_list_view": 1,
    "label": "Body"
   },
   {
-   "fieldname": "dfquser_id",
+   "fieldname": "dfqdtauser_id",
    "fieldtype": "Int",
    "in_list_view": 1,
    "label": "User ID",
@@ -65,5 +65,5 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "dfqtitle"
+ "title_field": "dfqdtatitle"
 }

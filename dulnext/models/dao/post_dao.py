@@ -73,12 +73,3 @@ class PostDAO(VirtualDAO):
         data = response.json()
 
         return VirtualFindResponse(data=data, actual_response=None)
-
-    def find_all_expensive(self):
-        response = requests.get(
-            "https://jsonplaceholder.typicode.com/posts",
-        )
-
-        data = response.json()
-
-        return VirtuaListResponse(actual_response=None, data=data)

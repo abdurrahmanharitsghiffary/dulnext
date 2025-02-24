@@ -1,9 +1,0 @@
-{
-    "encryption_key": "Sample Encryption Key",
-    "synapsefi_client_id": "Sample Client ID",
-    "synapsefi_client_secret": "Sample Client Secret",
-    "synapsefi_development_mode": true,
-    "synapsefi_fp": "Sample FP",
-    "synapsefi_ip": "Sample IP",
-    "synapsefi_logging": true
-}

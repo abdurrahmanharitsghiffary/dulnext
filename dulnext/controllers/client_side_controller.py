@@ -1,11 +1,11 @@
-from typing import Any
+from typing import Any, Dict
 
 import frappe
 from frappe.model.document import Document
 
 from dulnext.constants import Constants
 from dulnext.controllers.virtual_controller import VirtualController
-from dulnext.models.context.rest_context import RestContext
+from dulnext.models.context.client_side_context import ClientSideContext
 from dulnext.typings.pagination_options import PaginationOptions
 from dulnext.typings.virtual_dao import VirtualCountResponse, VirtuaListResponse
 from dulnext.utilities import Logger
@@ -14,7 +14,7 @@ from dulnext.utilities import Logger
 class ClientSideController(VirtualController):
     """Class For controlling Rest API Virtual Doctypes"""
 
-    def db_insert(self, context: RestContext, *args, **kwargs):
+    def db_insert(self, context: ClientSideContext, *args, **kwargs):
         try:
             dao = context.get_dao()
             rest_mapper = context.get_mapper()
@@ -31,7 +31,7 @@ class ClientSideController(VirtualController):
 
             Logger.Controller.error(e)
 
-    def load_from_db(self, context: RestContext):
+    def load_from_db(self, context: ClientSideContext):
         try:
             dao = context.get_dao()
             rest_mapper = context.get_mapper()
@@ -54,7 +54,7 @@ class ClientSideController(VirtualController):
 
             Logger.Controller.error(e)
 
-    def db_update(self, context: RestContext):
+    def db_update(self, context: ClientSideContext):
         try:
             context = self.get_virtual_context()
             dao = context.get_dao()
@@ -73,7 +73,7 @@ class ClientSideController(VirtualController):
             Logger.Controller.error(e)
 
     @staticmethod
-    def get_list(args, context: RestContext):
+    def get_list(args, context: ClientSideContext):
         try:
             paginated = context.get_pagination_mapper()
             filterable = context.get_filter_mapper()
@@ -105,6 +105,8 @@ class ClientSideController(VirtualController):
                 pagination=(request_pagination or {}),
             )
 
+            print(f"Response: {response}")
+
             data = []
 
             page_start = int(pagination_options.start)
@@ -114,7 +116,10 @@ class ClientSideController(VirtualController):
                 if is_client_side_pagination and not (page_start <= idx <= page_end):
                     continue
 
-                data.append(rest_mapper.map_item_to_doc(item, {}))
+                doc: Dict[str, Any] = {}
+                rest_mapper.map_item_to_doc(item, doc)
+
+                data.append(doc)
 
             return data
 
@@ -128,7 +133,7 @@ class ClientSideController(VirtualController):
             Logger.Controller.error(e)
 
     @staticmethod
-    def get_count(args, context: RestContext):
+    def get_count(args, context: ClientSideContext):
         try:
             paginated = context.get_pagination_mapper()
             filterable = context.get_filter_mapper()
