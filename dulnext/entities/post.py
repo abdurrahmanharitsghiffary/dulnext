@@ -1,8 +1,11 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
+
+from frappe.types import DF
 
 
-class PostEntity(BaseModel):
-    userId: int
-    id: int
-    title: str
-    body: str
+@dataclass
+class PostEntity:
+    dfqintuser_id: DF.Int
+    dfqintid: DF.Int
+    dfqdtatitle: DF.Data
+    dfqtxtbody: DF.Text

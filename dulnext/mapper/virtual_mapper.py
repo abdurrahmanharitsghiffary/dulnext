@@ -17,7 +17,7 @@ class VirtualMapper:
 
     def map_doc_to_item(
         self,
-        item: Dict[str, Any],
+        doc: Dict[str, Any],
         ignore_optional: bool = False,
     ) -> Dict[str, Any]:
         """Map doc to item which is displayed as List"""
@@ -27,7 +27,6 @@ class VirtualMapper:
         self,
         item: Dict[str, Any],
         doc: Dict[str, Any],
-        ignore_optional: bool = False,
-    ) -> Dict[str, Any]:
+    ) -> None:
         """Map item to doc which is displayed as List"""
         raise NotImplementedError("Method not implemented.")

@@ -1,3 +1,4 @@
+from dulnext.entities.post import PostEntity
 from dulnext.mapper.rest_mapper import RestMapper
 from dulnext.models.context.rest_context import RestContext
 from dulnext.models.dao.post_dao import PostDAO
@@ -8,7 +9,7 @@ from dulnext.models.paginator.client_side_paginator import ClientSidePaginator
 class PostContext(RestContext):
     def __init__(self):
         super().__init__(
-            RestMapper(convention="camelcase", name_column="id"),
+            RestMapper(convention="camelcase", name_column="id", doc_model=PostEntity),
             PostDAO(),
             ClientSidePaginator(),
             ClientSideFilters(),

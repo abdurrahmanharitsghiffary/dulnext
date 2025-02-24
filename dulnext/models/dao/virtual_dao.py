@@ -41,6 +41,10 @@ class VirtualDAO[T, AR]:
         """Finds a model instance by its primary key."""
         raise NotImplementedError("Method not implemented.")
 
+    def find_all_expensive(self) -> VirtuaListResponse[T, AR]:
+        """Fetch all of the list data without pagination."""
+        raise NotImplementedError("Method not implemented.")
+
 
 class VirtualDocstatus:
     name: DF.Data

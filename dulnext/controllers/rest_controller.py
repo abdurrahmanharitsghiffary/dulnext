@@ -5,16 +5,16 @@ from frappe.model.document import Document
 
 from dulnext.constants import Constants
 from dulnext.controllers.virtual_controller import VirtualController
-from dulnext.models.context.rest_context import VirtualContext
+from dulnext.models.context.rest_context import RestContext
 from dulnext.typings.pagination_options import PaginationOptions
 from dulnext.typings.virtual_dao import VirtualCountResponse, VirtuaListResponse
-from dulnext.utilities import LOGGER
+from dulnext.utilities import Logger
 
 
 class RestController(VirtualController):
     """Class For controlling Rest API Virtual Doctypes"""
 
-    def db_insert(self, context: VirtualContext, *args, **kwargs):
+    def db_insert(self, context: RestContext, *args, **kwargs):
         try:
             dao = context.get_dao()
             rest_mapper = context.get_mapper()
@@ -29,9 +29,9 @@ class RestController(VirtualController):
                 # We can't display application error in production.
                 frappe.throw("Error saving the data.")
 
-            LOGGER.error(e)
+            Logger.Controller.error(e)
 
-    def load_from_db(self, context: VirtualContext):
+    def load_from_db(self, context: RestContext):
         try:
             dao = context.get_dao()
             rest_mapper = context.get_mapper()
@@ -52,9 +52,9 @@ class RestController(VirtualController):
                 # We can't display application error in production.
                 frappe.throw(f"Error loading data with name: {self.name}")
 
-            LOGGER.error(e)
+            Logger.Controller.error(e)
 
-    def db_update(self, context: VirtualContext):
+    def db_update(self, context: RestContext):
         try:
             context = self.get_virtual_context()
             dao = context.get_dao()
@@ -70,16 +70,16 @@ class RestController(VirtualController):
                 # We can't display application error in production.
                 frappe.throw(f"Error updating the data: {self.name}")
 
-            LOGGER.error(e)
+            Logger.Controller.error(e)
 
     @staticmethod
-    def get_list(args, context: VirtualContext):
+    def get_list(args, context: RestContext):
         try:
             paginated = context.get_pagination_mapper()
             filterable = context.get_filter_mapper()
             dao = context.get_dao()
             rest_mapper = context.get_mapper()
-            print(f"ARGS: {args}")
+
             pagination_options = PaginationOptions(page_length=args.get("page_length", "20"), start=args.get("start", "0"))
 
             frappe_doc_filters = args.get("filters", {})
@@ -110,9 +110,6 @@ class RestController(VirtualController):
             page_start = int(pagination_options.start)
             page_end = page_start + int(pagination_options.page_length) - 1
 
-            print(f"Page Start: {page_start}")
-            print(f"Page End: {page_end}")
-
             for idx, item in enumerate(response.data):
                 if is_client_side_pagination and not (page_start <= idx <= page_end):
                     continue
@@ -128,10 +125,10 @@ class RestController(VirtualController):
                 # We can't display application error in production.
                 frappe.throw("Failed to show the document list.")
 
-            LOGGER.error(e)
+            Logger.Controller.error(e)
 
     @staticmethod
-    def get_count(args, context: VirtualContext):
+    def get_count(args, context: RestContext):
         try:
             paginated = context.get_pagination_mapper()
             filterable = context.get_filter_mapper()
@@ -159,7 +156,7 @@ class RestController(VirtualController):
                 # Don't throw exception if the get_count is error.
                 return 0
 
-            LOGGER.error(e)
+            Logger.Controller.error(e)
 
     @staticmethod
     def get_stats(args):

@@ -21,8 +21,6 @@ class PostDAO(VirtualDAO):
 
     def find_all(self, filters: Any, pagination: Dict[str, Any]) -> VirtuaListResponse[PostEntity, Any]:
         """Finds all model instances matching the given filters."""
-        print(f"Filters: {filters}")
-        print(f"Pagination: {pagination}")
 
         response = requests.get(
             "https://jsonplaceholder.typicode.com/posts",
@@ -41,7 +39,7 @@ class PostDAO(VirtualDAO):
     def update(self, name: str, new_data: Entity) -> VirtualActionResponse[Entity, Any]:
         """Updates the model instance in the database or API."""
 
-        response = requests.patch("https://jsonplaceholder.typicode.com/posts/" + name, new_data)
+        response = requests.patch("https://jsonplaceholder.typicode.com/posts/" + name, new_data)  # type: ignore[arg-type]
 
         data = response.json()
 
@@ -50,7 +48,7 @@ class PostDAO(VirtualDAO):
     def insert(self, data: Entity) -> VirtualActionResponse[Entity, Any]:
         """Inserts the model instance in the database or API."""
 
-        response = requests.post("https://jsonplaceholder.typicode.com/posts", data)
+        response = requests.post("https://jsonplaceholder.typicode.com/posts", data)  # type: ignore[arg-type]
 
         data = response.json()
 
@@ -75,3 +73,12 @@ class PostDAO(VirtualDAO):
         data = response.json()
 
         return VirtualFindResponse(data=data, actual_response=None)
+
+    def find_all_expensive(self):
+        response = requests.get(
+            "https://jsonplaceholder.typicode.com/posts",
+        )
+
+        data = response.json()
+
+        return VirtuaListResponse(actual_response=None, data=data)

@@ -1,3 +1,6 @@
 import frappe
 
-LOGGER = frappe.logger("dulnext")
+
+class Logger:
+    Dulnext = frappe.logger("dulnext")
+    Controller = frappe.logger("dulnext.controllers")
