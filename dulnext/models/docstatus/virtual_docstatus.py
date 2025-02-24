@@ -1,0 +1,2 @@
+class VirtualDocstatus:
+    pass

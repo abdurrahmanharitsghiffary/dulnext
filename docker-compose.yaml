@@ -81,6 +81,11 @@ services:
     entrypoint:
       - bash
       - -c
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+      - logs:/home/frappe/frappe-bench/logs
+      - ./common_site_config.default.json:/home/frappe/frappe-bench/common_site_config.default.json
+      - ./site_config.default.json:/home/frappe/frappe-bench/site_config.default.json
     command:
       - >
         wait-for-it -t 120 $$DB_HOST:$$DB_PORT;
@@ -100,6 +105,8 @@ services:
         done;
         echo "sites/common_site_config.json found";
         bench new-site frontend --db-type=postgres --db-name=$$FRAPPE_DEFAULT_SITE_DB --db-password=$$FRAPPE_DEFAULT_SITE_DB_PASSWORD --db-host=$$DB_HOST --db-port=$$DB_PORT --db-root-username=$$POSTGRES_USER --db-root-password=$$POSTGRES_PASSWORD --admin-password=$$FRAPPE_DEFAULT_SITE_ADMINISTRATOR_PASSWORD --set-default --install-app $$CUSTOM_APP_NAME;
+        jq -s '.[0] * .[1]' /home/frappe/frappe-bench/common_site_config.default.json /home/frappe/frappe-bench/sites/common_site_config.json  > /home/frappe/frappe-bench/tmp.json && mv /home/frappe/frappe-bench/tmp.json /home/frappe/frappe-bench/sites/common_site_config.json;
+        jq -s '.[0] * .[1]' /home/frappe/frappe-bench/site_config.default.json /home/frappe/frappe-bench/sites/frontend/site_config.json  > /home/frappe/frappe-bench/tmp.json && mv /home/frappe/frappe-bench/tmp.json /home/frappe/frappe-bench/sites/frontend/site_config.json;
         bench migrate;
         bench clear-cache;
 
