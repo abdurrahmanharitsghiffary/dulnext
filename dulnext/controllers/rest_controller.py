@@ -88,32 +88,14 @@ class RestController(VirtualController):
 
             mapped_filter = filterable.filters_mapper(filters=frappe_doc_filters)
 
-            request_filters = None
-            request_pagination = None
-
-            is_client_side_pagination = mapped_pagination.get("is_client_side_paginator")
-            is_client_side_filters = mapped_filter.get("is_client_side_filters")
-
-            if not is_client_side_filters:
-                request_filters = mapped_filter
-
-            if not is_client_side_pagination:
-                request_pagination = mapped_pagination
-
             response: VirtuaListResponse[Any, Any] = dao.find_all(
-                filters=(request_filters or frappe_doc_filters),
-                pagination=(request_pagination or {}),
+                filters=(mapped_filter or frappe_doc_filters),
+                pagination=(mapped_pagination or {}),
             )
 
             data = []
 
-            page_start = int(pagination_options.start)
-            page_end = page_start + int(pagination_options.page_length) - 1
-
-            for idx, item in enumerate(response.data):
-                if is_client_side_pagination and not (page_start <= idx <= page_end):
-                    continue
-
+            for item in response.data:
                 data.append(rest_mapper.map_item_to_doc(item, {}))
 
             return data

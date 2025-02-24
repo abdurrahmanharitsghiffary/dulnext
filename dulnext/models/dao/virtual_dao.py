@@ -15,7 +15,7 @@ class VirtualDAO[T, AR]:
         raise NotImplementedError("Method not implemented.")
 
     def find_all(self, filters: Dict[str, Any], pagination: Dict[str, Any]) -> VirtuaListResponse[T, AR]:
-        """Finds all model instances matching the given filters."""
+        """Finds all model instances matching the given filters. should return all of the list data if used in ClientSideContext"""
         raise NotImplementedError("Method not implemented.")
 
     def destroy(self, name: str) -> VirtualActionResponse[T, AR]:
@@ -39,10 +39,6 @@ class VirtualDAO[T, AR]:
 
     def find_one_by_pk(self, name: str) -> VirtualFindResponse[T, Any]:
         """Finds a model instance by its primary key."""
-        raise NotImplementedError("Method not implemented.")
-
-    def find_all_expensive(self) -> VirtuaListResponse[T, AR]:
-        """Fetch all of the list data without pagination."""
         raise NotImplementedError("Method not implemented.")
 
 
