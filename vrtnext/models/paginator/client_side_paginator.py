@@ -1,9 +1,9 @@
 from typing import Any, Dict
 
-from .paginated import Paginated, PaginationOptions
+from vrtnext.abc.virtual_paginator import PaginationOptions, VirtualPaginator
 
 
-class ClientSidePaginator(Paginated):
+class ClientSidePaginator(VirtualPaginator):
     """
     Best suited for REST API that does not implemented Pagination. This paginator will fetch all data from find_all method in your VirtualDAO implementation.
     if the REST API already have pagination implementation please map them by yourself instead. this Paginator cannot be used by DatabaseContext. please use Postgresql or MariaDB Paginator instead.
