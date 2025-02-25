@@ -67,7 +67,7 @@ class RedisDocumentMetadata(VirtualDocumentMetadata):
     def set(self, doctype: str, name: str, value: DocumentMetadata):
         cache = RedisWrapper()
 
-        cache.set(f"virtual_metadata::{frappe.scrub(doctype)}:{name}", json.dumps(value.__dict__))
+        cache.set(f"{RedisKey.VirtualMetadata.value}::{frappe.scrub(doctype)}:{name}", json.dumps(value.__dict__))
 
 
 if __name__ == "__main__":
