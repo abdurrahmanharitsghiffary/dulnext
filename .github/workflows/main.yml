@@ -1,4 +1,4 @@
-name: Dulnext Workflow
+name: VRTNext Workflow
 
 on:
   push:

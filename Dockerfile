@@ -129,8 +129,8 @@ COPY --from=builder --chown=frappe:frappe /home/frappe/frappe-bench /home/frappe
 
 WORKDIR /home/frappe/frappe-bench
 
-ARG CUSTOM_APP_NAME=${CUSTOM_APP_NAME:-dulnext}
-ARG CUSTOM_APP_REPO=${CUSTOM_APP_REPO:-https://github.com/abdurrahmanharitsghiffary/dulnext}
+ARG CUSTOM_APP_NAME=${CUSTOM_APP_NAME:-vrtnext}
+ARG CUSTOM_APP_REPO=${CUSTOM_APP_REPO:-https://github.com/abdurrahmanharitsghiffary/vrtnext}
 ARG CUSTOM_APP_BRANCH=${CUSTOM_APP_BRANCH:-main}
 
 

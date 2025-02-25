@@ -1,4 +1,4 @@
-# Dulnext - Virtual Doctype Frappe Template
+# VRTNext - Virtual Doctype Frappe Template
 
 A custom Frappe template built and maintained by Myself.
 This project is focused on building Doctypes using Virtual Doctype for better flexibility and performance.
@@ -10,8 +10,8 @@ The project follows the structure below:
 ```bash
 /TUTORIAL.md # Documentation on how to set up, develop, and contribute to the project.
 /site-config.example.json # Equivalent to .env.example but in frappe version
-/dulnext               # Root project directory
-├── /dulnext           # Core Frappe files
+/vrtnext               # Root project directory
+├── /vrtnext           # Core Frappe files
 ├── /controllers       # Custom controllers
 ├── /jobs             # Cron job tasks
 ├── /libs             # Third-party libraries
@@ -33,7 +33,7 @@ These documents cover everything from prerequisites and setup to advanced usage 
 
 ## Installation Guide
 
-This guide explains how to set up your Dulnext site using **frappe-bench**. For more detailed instructions, please refer to the [Frappe Documentation](https://docs.frappe.io/framework/user/en/introduction).
+This guide explains how to set up your VRTNext site using **frappe-bench**. For more detailed instructions, please refer to the [Frappe Documentation](https://docs.frappe.io/framework/user/en/introduction).
 
 ### Prerequisites
 
@@ -68,7 +68,7 @@ You will be prompted to enter your MySQL root password and set an Administrator 
 
 ### Step 3: Configure the Site
 
-Our Dulnext project includes a sample configuration file, site-config.example.json, which is analogous to a .env.example file for Frappe. Copy this file to your site’s configuration file:
+Our VRTNext project includes a sample configuration file, site-config.example.json, which is analogous to a .env.example file for Frappe. Copy this file to your site’s configuration file:
 
 ```bash
 cp site-config.example.json sites/your-site.local/site_config.json
@@ -76,20 +76,20 @@ cp site-config.example.json sites/your-site.local/site_config.json
 
 Edit sites/your-site.local/site_config.json as needed to customize the settings for your environment.
 
-### Step 4: Install the Dulnext App
+### Step 4: Install the VRTNext App
 
-Within your bench directory, add and install the Dulnext app:
+Within your bench directory, add and install the VRTNext app:
 
-Get the Dulnext App:
+Get the VRTNext App:
 
 ```bash
-bench get-app https://github.com/abdurrahmanharitsghiffary/dulnext.git
+bench get-app https://github.com/abdurrahmanharitsghiffary/vrtnext.git
 ```
 
 Install the App on Your Site:
 
 ```bash
-bench --site your-site.local install-app dulnext
+bench --site your-site.local install-app vrtnext
 ```
 
 ### Step 5: Start the Bench
@@ -210,7 +210,7 @@ By adhering to these conventions, you ensure that your Virtual Doctypes are stru
 
 ## Disclaimer
 
-**Dulnext** is an independent project and is not affiliated with, endorsed by, or associated with **ERPNext**, **Frappe Technologies**, or any of their products. The name **"Dulnext"** was inspired by **ERPNext** but is a separate and **standalone project**. All trademarks, product names, and logos mentioned are the property of their respective owners.
+**VRTNext** is an independent project and is not affiliated with, endorsed by, or associated with **ERPNext**, **Frappe Technologies**, or any of their products. The name **"VRTNext"** was inspired by **ERPNext** but is a separate and **standalone project**. All trademarks, product names, and logos mentioned are the property of their respective owners.
 
 ## License
 

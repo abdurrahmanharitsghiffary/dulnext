@@ -11,7 +11,7 @@ x-environment-common: &x-environment-common
   REDIS_CACHE: redis-cache:6379
   REDIS_QUEUE: redis-queue:6379
   SOCKETIO_PORT: "9000"
-  CUSTOM_APP_NAME: ${CUSTOM_APP_NAME:-dulnext}
+  CUSTOM_APP_NAME: ${CUSTOM_APP_NAME:-vrtnext}
 
 
 x-postgres-env: &x-postgres-env
