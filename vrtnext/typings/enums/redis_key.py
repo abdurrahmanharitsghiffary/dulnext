@@ -2,4 +2,4 @@ from enum import Enum
 
 
 class RedisKey(Enum):
-    VirtualMetadata = "virtual_metadata"
+    VirtualDocumentMetadata = "virtual_document_metadata"

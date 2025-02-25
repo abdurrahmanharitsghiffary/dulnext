@@ -1,9 +1,10 @@
+from abc import ABC
 from typing import Dict, Literal, Optional
 
 from .virtual_mapper import VirtualMapper
 
 
-class VirtualModelMapper(VirtualMapper):
+class VirtualModelMapper(VirtualMapper, ABC):
     """Extension class of the VirtualMapper"""
 
     model_class: type

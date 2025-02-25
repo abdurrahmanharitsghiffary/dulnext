@@ -2,9 +2,8 @@ from typing import Any, Dict
 
 import inflection
 
+from vrtnext.abc.virtual_model_mapper import VirtualModelMapper
 from vrtnext.utilities import get_nested, parse_docfield
-
-from .virtual_model_mapper import VirtualModelMapper
 
 
 class RestModelMapper(VirtualModelMapper):

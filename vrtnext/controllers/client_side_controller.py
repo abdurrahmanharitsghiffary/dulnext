@@ -3,8 +3,8 @@ from typing import Any, Dict
 import frappe
 from frappe.model.document import Document
 
+from vrtnext.abc.virtual_controller import VirtualController
 from vrtnext.constants import Constants
-from vrtnext.controllers.virtual_controller import VirtualController
 from vrtnext.models.context.client_side_context import ClientSideContext
 from vrtnext.typings.pagination_options import PaginationOptions
 from vrtnext.typings.virtual_dao import VirtualCountResponse, VirtuaListResponse

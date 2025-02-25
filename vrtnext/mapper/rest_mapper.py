@@ -3,7 +3,7 @@ from typing import Any, Dict, Literal
 import inflection
 from deprecated import deprecated
 
-from vrtnext.mapper.virtual_mapper import VirtualMapper
+from vrtnext.abc.virtual_mapper import VirtualMapper
 
 
 def process_key_value(key: str, value: Any, doc: Dict[str, Any], parent_key: str = ""):

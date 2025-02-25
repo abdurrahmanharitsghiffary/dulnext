@@ -1,5 +1,5 @@
-from vrtnext.models.sorter.sorter import Sorter
+from vrtnext.abc.virtual_sorter import VirtualSorter
 
 
-class RestSorter(Sorter):
+class RestSorter(VirtualSorter):
     pass

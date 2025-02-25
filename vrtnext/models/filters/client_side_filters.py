@@ -1,9 +1,9 @@
 from typing import Any, Dict, List
 
-from .filterable import Filterable
+from vrtnext.abc.virtual_filters import VirtualFilters
 
 
-class ClientSideFilters(Filterable):
+class ClientSideFilters(VirtualFilters):
     """
     Best suited for REST API that does not implemented all of frappe filters. This filters will fetch all data from find_all method in your VirtualDAO implementation.
     if the REST API already have filters implementation please map them by yourself instead. this Filters cannot be used by DatabaseContext. please use Postgresql or MariaDB Filters instead.

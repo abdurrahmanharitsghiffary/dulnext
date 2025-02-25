@@ -2,8 +2,8 @@ from typing import Any, Dict, TypeVar
 
 import requests
 
+from vrtnext.abc.virtual_dao import VirtualDAO
 from vrtnext.entities.post import PostEntity
-from vrtnext.models.dao.virtual_dao import VirtualDAO
 from vrtnext.typings.virtual_dao import VirtualActionResponse, VirtualCountResponse, VirtualFindResponse, VirtuaListResponse
 
 Entity = TypeVar("Entity", bound=PostEntity)

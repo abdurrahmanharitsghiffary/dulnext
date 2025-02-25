@@ -1,23 +1,24 @@
+from abc import ABC
 from typing import Optional
 
+from vrtnext.abc.virtual_dao import VirtualDAO
+from vrtnext.abc.virtual_filters import VirtualFilters
+from vrtnext.abc.virtual_mapper import VirtualMapper
+from vrtnext.abc.virtual_paginator import VirtualPaginator
 from vrtnext.exceptions import MissingDependencyError
-from vrtnext.mapper.virtual_mapper import VirtualMapper
-from vrtnext.models.dao.virtual_dao import VirtualDAO
-from vrtnext.models.filters.filterable import Filterable
-from vrtnext.models.paginator.paginated import Paginated
 
 
-class VirtualContext:
+class VirtualContext(ABC):
     _virtual_dao: Optional[VirtualDAO] = None
-    _filterable: Optional[Filterable] = None
-    _paginated: Optional[Paginated] = None
+    _filterable: Optional[VirtualFilters] = None
+    _paginated: Optional[VirtualPaginator] = None
     _virtual_mapper: Optional[VirtualMapper] = None
 
     def __init__(
         self,
         virtual_dao: VirtualDAO,
-        paginated: Paginated,
-        filterable: Filterable,
+        paginated: VirtualPaginator,
+        filterable: VirtualFilters,
         virtual_mapper: VirtualMapper,
     ):
         self._filterable = filterable
@@ -25,13 +26,13 @@ class VirtualContext:
         self._virtual_dao = virtual_dao
         self._virtual_mapper = virtual_mapper
 
-    def get_filter_mapper(self) -> Filterable:
+    def get_filter_mapper(self) -> VirtualFilters:
         if not self._filterable:
-            raise MissingDependencyError("Failed to get the Filterable")
+            raise MissingDependencyError("Failed to get the VirtualFilters")
 
         return self._filterable
 
-    def get_pagination_mapper(self) -> Paginated:
+    def get_pagination_mapper(self) -> VirtualPaginator:
         if not self._paginated:
             raise MissingDependencyError("Failed to get the Paginated")
 

@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import Dict, Optional
 
 from frappe.model.document import Document
@@ -5,7 +6,7 @@ from frappe.model.document import Document
 from vrtnext.models.like import LikeController
 
 
-class VirtualController(Document):
+class VirtualController(Document, ABC):
     """
     VirtualController is an abstract base class that serves as a contract for derived classes.
     Classes inheriting from VirtualController, such as RestController and DatabaseController.
