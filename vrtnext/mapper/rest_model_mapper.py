@@ -1,8 +1,12 @@
-from typing import Any, Dict
+import json
+from typing import Any, Dict, Optional
 
+import frappe
 import inflection
+from frappe.utils import now
 
 from vrtnext.abc.virtual_model_mapper import VirtualModelMapper
+from vrtnext.typings.document_metadata import DocumentMetadata
 from vrtnext.utilities import get_nested, parse_docfield
 
 
@@ -43,11 +47,7 @@ class RestModelMapper(VirtualModelMapper):
 
         return item
 
-    def map_item_to_doc(
-        self,
-        item: Dict[str, Any],
-        doc: Dict[str, Any],
-    ) -> None:
+    def map_item_to_doc(self, item: Dict[str, Any], doc: Dict[str, Any], metadata: Optional[DocumentMetadata]) -> None:
         doc_fields = self.model_class.__annotations__.keys()
 
         for key in doc_fields:
@@ -75,13 +75,29 @@ class RestModelMapper(VirtualModelMapper):
 
             ref[key] = value  # Assign the final value
 
-        doc["modified"] = doc.get("modified")
-        doc["creation"] = doc.get("creation")
-        doc["modified_by"] = doc.get("modified_by")
-        doc["owner"] = doc.get("owner")
-        doc["docstatus"] = doc.get("docstatus")
-        doc["idx"] = doc.get("idx")
-        doc["_user_tags"] = doc.get("_user_tags")
-        doc["_comments"] = doc.get("_comments")
-        doc["_assign"] = doc.get("_assign")
-        doc["_liked_by"] = doc.get("_liked_by")
+        if metadata:
+            doc["modified"] = metadata.modified
+            doc["creation"] = metadata.creation
+            doc["modified_by"] = metadata.modified_by
+            doc["owner"] = metadata.owner
+            doc["docstatus"] = metadata.docstatus
+            doc["idx"] = metadata.idx
+            doc["_user_tags"] = metadata._user_tags
+            doc["_comments"] = metadata._comments
+            doc["_assign"] = metadata._assign
+            doc["_liked_by"] = metadata._liked_by
+            if isinstance(metadata._comments, str):
+                metadata._comments = json.loads(metadata._comments)
+            doc["_comment_count"] = len(metadata._comments or [])
+        else:
+            doc["modified"] = now()
+            doc["creation"] = now()
+            doc["modified_by"] = frappe.session.user
+            doc["owner"] = frappe.session.user
+            doc["docstatus"] = 0
+            doc["idx"] = 0
+            doc["_user_tags"] = None
+            doc["_comments"] = None
+            doc["_assign"] = None
+            doc["_liked_by"] = None
+            doc["_comment_count"] = 0

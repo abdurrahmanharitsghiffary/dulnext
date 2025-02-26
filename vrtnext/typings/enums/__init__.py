@@ -1,4 +1,4 @@
+from .cache_key import CacheKey
 from .docfield import Docfield
-from .redis_key import RedisKey
 
-__all__ = ["Docfield", "RedisKey"]
+__all__ = ["Docfield", "CacheKey"]

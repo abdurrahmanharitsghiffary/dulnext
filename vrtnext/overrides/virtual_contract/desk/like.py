@@ -10,7 +10,7 @@ from frappe import _
 from frappe.database.schema import add_column
 from frappe.desk.form.document_follow import follow_document
 
-from vrtnext.utilities import safe_list_get
+from vrtnext.models.document_metadata.redis_document_metadata import RedisDocumentMetadata
 
 
 @frappe.whitelist()
@@ -25,32 +25,62 @@ def toggle_like(doctype, name, add=False):
     :param name: Name of the document to like
     :param add: `Yes` if like is to be added. If not `Yes` the like will be removed."""
 
-    _toggle_like(doctype, name, add)
+    is_virtual_doctype = frappe.get_meta(doctype).is_virtual
+
+    if is_virtual_doctype:
+        _toggle_virtual_like(doctype, name, add)
+    else:
+        _toggle_like(doctype, name, add)
+
+
+def _toggle_virtual_like(doctype, name, add, user=None):
+    """Same as toggle_like but hides param `user` from API"""
+
+    if not user:
+        user = frappe.session.user
+
+    redis_doc_meta = RedisDocumentMetadata()
+
+    try:
+        filters = [["reference_name", "=", name], ["comment_type", "=", "Like"], ["reference_doctype", "=", doctype], ["owner", "=", user]]
+
+        liked_by = frappe.db.get_list("Comment", fields=["owner"], filters=filters, order_by="modified desc")
+
+        print(f"Liked By: {liked_by}")
+
+        if not liked_by:
+            liked_by = []
+
+        liked_by = [liked.owner for liked in liked_by]
+
+        if add == "Yes":
+            if user not in liked_by:
+                liked_by.append(user)
+                add_comment(doctype, name)
+                if frappe.get_cached_value("User", user, "follow_liked_documents"):
+                    follow_document(doctype, name, user)
+        else:
+            if user in liked_by:
+                liked_by.remove(user)
+                remove_like(doctype, name)
+        redis_doc_meta.update_meta(doctype, name, "_liked_by", json.dumps(liked_by))
+
+    except frappe.db.ProgrammingError as e:
+        if frappe.db.is_missing_column(e):
+            add_column(doctype, "_liked_by", "Text")
+            _toggle_virtual_like(doctype, name, add, user)
+        else:
+            raise
 
 
 def _toggle_like(doctype, name, add, user=None):
     """Same as toggle_like but hides param `user` from API"""
 
-    print(f"IS Virtual Doctype: {frappe.get_meta(doctype).is_virtual}")
-    print(doctype)
-    print(name)
-
     if not user:
         user = frappe.session.user
 
     try:
-        filters = [
-            ["reference_name", "=", name],
-            ["comment_type", "=", "Like"],
-            ["reference_doctype", "=", doctype],
-        ]
-
-        # Safely access list using slice
-        liked_by_list = frappe.db.get_list("Comment", filters=filters, order_by="modified desc")
-
-        liked_by = safe_list_get(liked_by_list, 0, None)
-
-        print(f"Liked By: {liked_by}")
+        liked_by = frappe.db.get_value(doctype, name, "_liked_by")
 
         if liked_by:
             liked_by = json.loads(liked_by)
@@ -67,6 +97,7 @@ def _toggle_like(doctype, name, add, user=None):
             if user in liked_by:
                 liked_by.remove(user)
                 remove_like(doctype, name)
+
         if frappe.get_meta(doctype).issingle:
             frappe.db.set_single_value(doctype, "_liked_by", json.dumps(liked_by), update_modified=False)
         else:

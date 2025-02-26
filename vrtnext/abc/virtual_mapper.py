@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Literal
+from typing import Any, Dict, Literal, Optional
+
+from vrtnext.typings.document_metadata import DocumentMetadata
 
 
 class VirtualMapper(ABC):
@@ -26,10 +28,6 @@ class VirtualMapper(ABC):
         pass
 
     @abstractmethod
-    def map_item_to_doc(
-        self,
-        item: Dict[str, Any],
-        doc: Dict[str, Any],
-    ) -> None:
+    def map_item_to_doc(self, item: Dict[str, Any], doc: Dict[str, Any], metadata: Optional[DocumentMetadata]) -> None:
         """Map item to doc which is displayed as List"""
         pass

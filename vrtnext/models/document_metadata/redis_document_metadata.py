@@ -1,22 +1,20 @@
 import json
-from datetime import datetime
 from typing import Any
 
 import frappe
-from frappe.utils.redis_wrapper import RedisWrapper
+from frappe.utils import now
 
 from vrtnext.abc.virtual_document_metadata import VirtualDocumentMetadata
 from vrtnext.typings.document_metadata import DocumentMetadata
-from vrtnext.typings.enums import RedisKey
+from vrtnext.typings.enums import CacheKey
 
 
 class RedisDocumentMetadata(VirtualDocumentMetadata):
     """Class for handle the storing metadata into redis storage."""
 
     def find(self, doctype: str, name: str) -> DocumentMetadata | None:
-        cache = RedisWrapper()
-
-        response = cache.get(f"{RedisKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}")
+        cache = frappe.cache()
+        response = cache.get(f"{CacheKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}")
 
         if response:
             data = {
@@ -38,47 +36,69 @@ class RedisDocumentMetadata(VirtualDocumentMetadata):
         return None
 
     def update_meta(self, doctype: str, name: str, key: str, value: Any) -> None:
-        cache = RedisWrapper()
-
+        cache = frappe.cache()
         response = self.find(doctype, name)
 
         if response:
             response.__setattr__(key, value)
+            response.__setattr__("modified", now())
+            response.__setattr__("modified_by", frappe.session.get("user", "Anonymous"))
+            cache_key = f"{CacheKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}"
 
-            cache.set(f"{RedisKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}", json.dumps(response.__dict__))
+            cache.set(cache_key, json.dumps(response.__dict__))
+
+    def update_timestamp(
+        self,
+        doctype: str,
+        name: str,
+    ):
+        cache = frappe.cache()
+        response = self.find(doctype, name)
+
+        if response:
+            response.__setattr__("modified", now())
+            response.__setattr__("modified_by", frappe.session.get("user", "Anonymous"))
+            cache_key = f"{CacheKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}"
+
+            cache.set(cache_key, json.dumps(response.__dict__))
 
     def set(self, doctype: str, name: str, value: DocumentMetadata) -> None:
-        cache = RedisWrapper()
+        cache = frappe.cache()
+        default_meta = self.get_default_doc_metadata()
 
-        cache.set(f"{RedisKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}", json.dumps(value.__dict__))
+        value.creation = now()
+        value.modified = now()
+        value.modified_by = frappe.session.get("user", "Anonymous")
+        value.owner = frappe.session.get("user", "Anonymous")
 
+        merged_meta = {**default_meta.__dict__, **value.__dict__}
+        cache_key = f"{CacheKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}"
 
-if __name__ == "__main__":
-    redis_virtual_metadata = RedisDocumentMetadata()
+        cache.set(cache_key, json.dumps(merged_meta))
 
-    item = redis_virtual_metadata.find("Post JSON Placeholder", "lolers")
+    def find_or_save(self, doctype: str, name: str) -> DocumentMetadata | None:
+        result = self.find(doctype, name)
+        if not result:
+            value = self.get_default_doc_metadata()
+            self.set(doctype, name, value)
 
-    redis_virtual_metadata.set(
-        "Post JSON Placeholder",
-        "lolers",
-        DocumentMetadata(
-            _user_tags="",
-            _liked_by="",
-            _comments="",
-            _assign="",
-            modified=datetime(2024, 3, 15).isoformat(),
-            modified_by="Administrator",
-            creation=datetime(2024, 3, 15).isoformat(),
-            owner="Administrator",
-            docstatus=0,
-            idx=0,
-        ),
-    )
+        return result
 
-    print(f"Item: {item}")
+    def get_default_doc_metadata(self) -> DocumentMetadata:
+        data = {
+            "modified": self.get_default_user(),
+            "creation": now(),
+            "owner": self.get_default_user(),
+            "modified_by": now(),
+            "docstatus": 0,
+            "idx": 0,
+            "_user_tags": None,
+            "_liked_by": None,
+            "_comments": None,
+            "_assign": None,
+        }
 
-    redis_virtual_metadata.update_meta("Post JSON Placeholder", "lolers", "modified", "2025-04-13")
+        return DocumentMetadata(**data)
 
-    item = redis_virtual_metadata.find("Post JSON Placeholder", "lolers")
-
-    print(f"Item: {item}")
+    def get_default_user(self) -> str:
+        return frappe.session.get("user", "Anonymous")

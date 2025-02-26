@@ -182,7 +182,10 @@ after_install = "vrtnext.setup.install.after_install"
 # Overriding Methods
 # ------------------------------
 #
-override_whitelisted_methods = {"frappe.desk.like.toggle_like": "vrtnext.overrides.virtual_contract.desk.like.toggle_like"}
+override_whitelisted_methods = {
+    "frappe.desk.like.toggle_like": "vrtnext.overrides.virtual_contract.desk.like.toggle_like",
+    "frappe.desk.form.utils.add_comment": "vrtnext.overrides.virtual_contract.desk.form.utils.add_comment",
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,

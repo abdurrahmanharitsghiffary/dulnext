@@ -1,9 +1,10 @@
-from typing import Any, Dict, Literal
+from typing import Any, Dict, Literal, Optional
 
 import inflection
 from deprecated import deprecated
 
 from vrtnext.abc.virtual_mapper import VirtualMapper
+from vrtnext.typings.document_metadata import DocumentMetadata
 
 
 def process_key_value(key: str, value: Any, doc: Dict[str, Any], parent_key: str = ""):
@@ -34,12 +35,7 @@ class RestMapper(VirtualMapper):
     ):
         super().__init__(convention, name_column)
 
-    def map_item_to_doc(
-        self,
-        item: Dict[str, Any],
-        doc: Dict[str, Any],
-        ignore_optional: bool = False,
-    ) -> None:
+    def map_item_to_doc(self, item: Dict[str, Any], doc: Dict[str, Any], metadata: Optional[DocumentMetadata]) -> None:
         """Map the api response to doctype"""
 
         for key, value in item.items():
@@ -47,9 +43,6 @@ class RestMapper(VirtualMapper):
 
             if self.convention == "camelcase":
                 snake_cased_key = inflection.underscore(key)
-
-            if ignore_optional and value is None:
-                continue
 
             if snake_cased_key == self.name_column:
                 doc["name"] = value

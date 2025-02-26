@@ -1,5 +1,5 @@
 from enum import Enum
 
 
-class RedisKey(Enum):
+class CacheKey(Enum):
     VirtualDocumentMetadata = "virtual_document_metadata"
