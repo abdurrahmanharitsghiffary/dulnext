@@ -7,4 +7,9 @@ from vrtnext.models.paginator.client_side_paginator import ClientSidePaginator
 
 class ClientSideContext(VirtualContext):
     def __init__(self, virtual_dao: VirtualDAO, virtual_mapper: VirtualMapper):
-        super().__init__(virtual_dao, ClientSidePaginator(), ClientSideFilters(), virtual_mapper)
+        super().__init__(
+            virtual_dao,
+            ClientSidePaginator(),
+            ClientSideFilters(),
+            virtual_mapper,
+        )

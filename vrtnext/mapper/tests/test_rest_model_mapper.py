@@ -17,12 +17,16 @@ class SampleEntity:
 
 @pytest.fixture
 def camelcase_mapper():
-    return RestModelMapper(model_class=SampleEntity, name_column="id", convention="camelcase")
+    return RestModelMapper(
+        model_class=SampleEntity, name_column="id", convention="camelcase"
+    )
 
 
 @pytest.fixture
 def lowercase_mapper():
-    return RestModelMapper(model_class=SampleEntity, name_column="id", convention="lowercase")
+    return RestModelMapper(
+        model_class=SampleEntity, name_column="id", convention="lowercase"
+    )
 
 
 def test_map_doc_to_item_camelcase(camelcase_mapper: RestModelMapper) -> None:
@@ -49,7 +53,9 @@ def test_map_doc_to_item_camelcase(camelcase_mapper: RestModelMapper) -> None:
     assert result == expected_item
 
 
-def test_map_doc_to_item_camelcase_no_ignore_optional(camelcase_mapper: RestModelMapper) -> None:
+def test_map_doc_to_item_camelcase_no_ignore_optional(
+    camelcase_mapper: RestModelMapper,
+) -> None:
     doc = {
         "dfqdtatitle": "Loler Title",
         "dfqdtauserdotfull_namedotfirst_name": "Firstname",
@@ -75,7 +81,16 @@ def test_map_doc_to_item_camelcase_no_ignore_optional(camelcase_mapper: RestMode
 
 
 def test_map_item_to_doc_camelcase(camelcase_mapper: RestModelMapper) -> None:
-    item = {"title": "Lolerzzz", "user": {"username": None, "jamalodon": None, "fullName": {"firstName": "Jamal", "lastName": "Boolean"}, "id": "loleresss-uuidv4"}, "createdAt": "2025-03-14"}
+    item = {
+        "title": "Lolerzzz",
+        "user": {
+            "username": None,
+            "jamalodon": None,
+            "fullName": {"firstName": "Jamal", "lastName": "Boolean"},
+            "id": "loleresss-uuidv4",
+        },
+        "createdAt": "2025-03-14",
+    }
 
     doc = {
         "dfqdtatitle": None,
@@ -122,7 +137,9 @@ def test_map_doc_to_item_lowercase(lowercase_mapper: RestModelMapper) -> None:
     assert result == expected_item
 
 
-def test_map_doc_to_item_lowercase_no_ignore_optional(lowercase_mapper: RestModelMapper) -> None:
+def test_map_doc_to_item_lowercase_no_ignore_optional(
+    lowercase_mapper: RestModelMapper,
+) -> None:
     doc = {
         "dfqdtatitle": "Loler Title",
         "dfqdtauserdotfull_namedotfirst_name": "Firstname",
@@ -148,7 +165,16 @@ def test_map_doc_to_item_lowercase_no_ignore_optional(lowercase_mapper: RestMode
 
 
 def test_map_item_to_doc_lowercase(lowercase_mapper: RestModelMapper) -> None:
-    item = {"title": "Lolerzzz", "user": {"username": None, "jamalodon": None, "full_name": {"first_name": "Jamal", "last_name": "Boolean"}, "id": "loleresss-uuidv4"}, "created_at": "2025-03-14"}
+    item = {
+        "title": "Lolerzzz",
+        "user": {
+            "username": None,
+            "jamalodon": None,
+            "full_name": {"first_name": "Jamal", "last_name": "Boolean"},
+            "id": "loleresss-uuidv4",
+        },
+        "created_at": "2025-03-14",
+    }
 
     doc = {
         "dfqdtatitle": None,
@@ -181,7 +207,12 @@ def test_map_item_to_doc_spqidx(lowercase_mapper: RestModelMapper) -> None:
                 "first_name": "Jamal",
                 "last_name": "Boolean",
             },
-            "legal_names": ["Jamal Boolean", "Jimmy Boolean", "Joko Widada", "Agus Syedih"],
+            "legal_names": [
+                "Jamal Boolean",
+                "Jimmy Boolean",
+                "Joko Widada",
+                "Agus Syedih",
+            ],
             "id": "loleresss-uuidv4",
         },
         "created_at": "2025-03-14",
@@ -226,7 +257,12 @@ def test_map_doc_to_item_spqidx(lowercase_mapper: RestModelMapper) -> None:
                 "last_name": "Lastname",
             },
             "id": "some-uuid-v4",
-            "legal_names": ["Jamal Boolean", "Jimmy Boolean", "Joko Widada", "Agus Syedih"],
+            "legal_names": [
+                "Jamal Boolean",
+                "Jimmy Boolean",
+                "Joko Widada",
+                "Agus Syedih",
+            ],
         },
         "created_at": "2024-03-25",
     }

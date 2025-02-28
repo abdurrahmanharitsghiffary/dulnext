@@ -14,7 +14,9 @@ class RedisDocumentMetadata(VirtualDocumentMetadata):
 
     def find(self, doctype: str, name: str) -> DocumentMetadata | None:
         cache = frappe.cache()
-        response = cache.get(f"{CacheKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}")
+        response = cache.get(
+            f"{CacheKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}"
+        )
 
         if response:
             data = {
@@ -35,14 +37,18 @@ class RedisDocumentMetadata(VirtualDocumentMetadata):
 
         return None
 
-    def update_meta(self, doctype: str, name: str, key: str, value: Any) -> None:
+    def update_meta(
+        self, doctype: str, name: str, key: str, value: Any
+    ) -> None:
         cache = frappe.cache()
         response = self.find(doctype, name)
 
         if response:
             response.__setattr__(key, value)
             response.__setattr__("modified", now())
-            response.__setattr__("modified_by", frappe.session.get("user", "Anonymous"))
+            response.__setattr__(
+                "modified_by", frappe.session.get("user", "Anonymous")
+            )
             cache_key = f"{CacheKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}"
 
             cache.set(cache_key, json.dumps(response.__dict__))
@@ -57,7 +63,9 @@ class RedisDocumentMetadata(VirtualDocumentMetadata):
 
         if response:
             response.__setattr__("modified", now())
-            response.__setattr__("modified_by", frappe.session.get("user", "Anonymous"))
+            response.__setattr__(
+                "modified_by", frappe.session.get("user", "Anonymous")
+            )
             cache_key = f"{CacheKey.VirtualDocumentMetadata.value}::{frappe.scrub(doctype)}:{name}"
 
             cache.set(cache_key, json.dumps(response.__dict__))

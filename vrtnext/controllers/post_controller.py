@@ -6,7 +6,9 @@ POST_CONTEXT = PostContext()
 
 class PostController(ClientSideController):
     def db_insert(self, *args, **kwargs):
-        return ClientSideController.db_insert(self, POST_CONTEXT, *args, **kwargs)
+        return ClientSideController.db_insert(
+            self, POST_CONTEXT, *args, **kwargs
+        )
 
     def load_from_db(self):
         return ClientSideController.load_from_db(self, POST_CONTEXT)

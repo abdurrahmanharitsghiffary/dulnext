@@ -19,7 +19,9 @@ class RestController(VirtualController):
             dao = context.get_dao()
             rest_mapper = context.get_mapper()
 
-            creatable_doc = rest_mapper.map_doc_to_item(self.as_dict(), ignore_optional=True)
+            creatable_doc = rest_mapper.map_doc_to_item(
+                self.as_dict(), ignore_optional=True
+            )
 
             dao.insert(data=creatable_doc)
         except Exception as e:
@@ -59,7 +61,9 @@ class RestController(VirtualController):
             dao = context.get_dao()
             rest_mapper = context.get_mapper()
 
-            updatable_doc = rest_mapper.map_doc_to_item(self, ignore_optional=True)
+            updatable_doc = rest_mapper.map_doc_to_item(
+                self, ignore_optional=True
+            )
 
             dao.update(new_data=updatable_doc, name=self.name)
         except Exception as e:
@@ -79,13 +83,20 @@ class RestController(VirtualController):
             dao = context.get_dao()
             rest_mapper = context.get_mapper()
 
-            pagination_options = PaginationOptions(page_length=args.get("page_length", "20"), start=args.get("start", "0"))
+            pagination_options = PaginationOptions(
+                page_length=args.get("page_length", "20"),
+                start=args.get("start", "0"),
+            )
 
             frappe_doc_filters = args.get("filters", {})
 
-            mapped_pagination = paginated.pagination_mapper(options=pagination_options)
+            mapped_pagination = paginated.pagination_mapper(
+                options=pagination_options
+            )
 
-            mapped_filter = filterable.filters_mapper(filters=frappe_doc_filters)
+            mapped_filter = filterable.filters_mapper(
+                filters=frappe_doc_filters
+            )
 
             response: VirtuaListResponse[Any, Any] = dao.find_all(
                 filters=(mapped_filter or frappe_doc_filters),
@@ -117,13 +128,20 @@ class RestController(VirtualController):
             filterable = context.get_filter_mapper()
             dao = context.get_dao()
 
-            pagination_options = PaginationOptions(page_length=args.get("per_page", "20"), start=args.get("start", "0"))
+            pagination_options = PaginationOptions(
+                page_length=args.get("per_page", "20"),
+                start=args.get("start", "0"),
+            )
 
             frappe_doc_filters = args.get("filters", {})
 
-            mapped_pagination = paginated.pagination_mapper(options=pagination_options)
+            mapped_pagination = paginated.pagination_mapper(
+                options=pagination_options
+            )
 
-            mapped_filter = filterable.filters_mapper(filters=frappe_doc_filters)
+            mapped_filter = filterable.filters_mapper(
+                filters=frappe_doc_filters
+            )
 
             response: VirtualCountResponse[Any] = dao.get_item_count(
                 filters=(mapped_filter or frappe_doc_filters),

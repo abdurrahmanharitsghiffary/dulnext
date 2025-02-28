@@ -8,5 +8,7 @@ class PostContext(ClientSideContext):
     def __init__(self):
         super().__init__(
             PostDAO(),
-            RestModelMapper(convention="camelcase", name_column="id", model_class=PostEntity),
+            RestModelMapper(
+                convention="camelcase", name_column="id", model_class=PostEntity
+            ),
         )

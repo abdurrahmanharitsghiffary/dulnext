@@ -2,7 +2,12 @@ from vrtnext.models.docfield_meta import DocfieldMeta
 
 
 def parse_docfield(df: str) -> DocfieldMeta:
-    result = DocfieldMeta(docfield_type=None, fieldname=None, is_can_mapped=False, special_type=None)
+    result = DocfieldMeta(
+        docfield_type=None,
+        fieldname=None,
+        is_can_mapped=False,
+        special_type=None,
+    )
 
     is_can_mapped = df.startswith("dfq")
 

@@ -28,6 +28,11 @@ class VirtualMapper(ABC):
         pass
 
     @abstractmethod
-    def map_item_to_doc(self, item: Dict[str, Any], doc: Dict[str, Any], metadata: Optional[DocumentMetadata]) -> None:
+    def map_item_to_doc(
+        self,
+        item: Dict[str, Any],
+        doc: Dict[str, Any],
+        metadata: Optional[DocumentMetadata],
+    ) -> None:
         """Map item to doc which is displayed as List"""
         pass

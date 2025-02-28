@@ -24,7 +24,12 @@ class RestModelMapper(VirtualModelMapper):
 
             docfieldmeta = parse_docfield(key)
 
-            if value is None and ignore_optional or not docfieldmeta.is_can_mapped or not docfieldmeta.fieldname:
+            if (
+                value is None
+                and ignore_optional
+                or not docfieldmeta.is_can_mapped
+                or not docfieldmeta.fieldname
+            ):
                 continue
 
             if docfieldmeta.special_type == "idx" and isinstance(value, str):
@@ -47,7 +52,12 @@ class RestModelMapper(VirtualModelMapper):
 
         return item
 
-    def map_item_to_doc(self, item: Dict[str, Any], doc: Dict[str, Any], metadata: Optional[DocumentMetadata]) -> None:
+    def map_item_to_doc(
+        self,
+        item: Dict[str, Any],
+        doc: Dict[str, Any],
+        metadata: Optional[DocumentMetadata] = None,
+    ) -> None:
         doc_fields = self.model_class.__annotations__.keys()
 
         for key in doc_fields:
@@ -56,7 +66,11 @@ class RestModelMapper(VirtualModelMapper):
 
             docfieldmeta = parse_docfield(key)
 
-            if not docfieldmeta.is_can_mapped or not docfieldmeta.fieldname or not docfieldmeta.docfield_type:
+            if (
+                not docfieldmeta.is_can_mapped
+                or not docfieldmeta.fieldname
+                or not docfieldmeta.docfield_type
+            ):
                 continue
 
             traversed_keys = docfieldmeta.fieldname.split("dot")

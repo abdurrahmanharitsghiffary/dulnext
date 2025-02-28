@@ -1,19 +1,28 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict
 
-from vrtnext.typings.virtual_dao import VirtualActionResponse, VirtualCountResponse, VirtualFindResponse, VirtuaListResponse
+from vrtnext.typings.virtual_dao import (
+    VirtualActionResponse,
+    VirtualCountResponse,
+    VirtualFindResponse,
+    VirtuaListResponse,
+)
 
 
 class VirtualDAO[T, AR](ABC):
     """This class is used for retrieve or getting the data either from Database or API"""
 
     @abstractmethod
-    def get_item_count(self, filters: Dict[str, Any], pagination: Dict[str, Any]) -> VirtualCountResponse[AR]:
+    def get_item_count(
+        self, filters: Dict[str, Any], pagination: Dict[str, Any]
+    ) -> VirtualCountResponse[AR]:
         """Get model instances counts."""
         pass
 
     @abstractmethod
-    def find_all(self, filters: Dict[str, Any], pagination: Dict[str, Any]) -> VirtuaListResponse[T, AR]:
+    def find_all(
+        self, filters: Dict[str, Any], pagination: Dict[str, Any]
+    ) -> VirtuaListResponse[T, AR]:
         """Finds all model instances matching the given filters. should return all of the list data if used in ClientSideContext"""
         pass
 

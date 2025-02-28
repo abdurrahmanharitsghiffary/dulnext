@@ -22,7 +22,9 @@ class CommentController:
             ["content", "=", "Comment"],
         ]
 
-        return frappe.db.get_list("Comment", filters=filters, order_by="modified desc")
+        return frappe.db.get_list(
+            "Comment", filters=filters, order_by="modified desc"
+        )
 
     def append_comment(self, new_comment: str):
         comment_doc = frappe.get_doc(

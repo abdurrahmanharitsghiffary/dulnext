@@ -7,12 +7,16 @@ from vrtnext.abc.virtual_mapper import VirtualMapper
 from vrtnext.typings.document_metadata import DocumentMetadata
 
 
-def process_key_value(key: str, value: Any, doc: Dict[str, Any], parent_key: str = ""):
+def process_key_value(
+    key: str, value: Any, doc: Dict[str, Any], parent_key: str = ""
+):
     """Recursively process nested fields and apply transformation rules."""
     full_key = f"{parent_key}dot{key}" if parent_key else key
 
     is_value_dict = isinstance(value, dict)
-    is_value_list_of_str = isinstance(value, list) and all(isinstance(item, str) for item in value)
+    is_value_list_of_str = isinstance(value, list) and all(
+        isinstance(item, str) for item in value
+    )
 
     if is_value_dict:
         # Process nested dictionary
@@ -35,7 +39,12 @@ class RestMapper(VirtualMapper):
     ):
         super().__init__(convention, name_column)
 
-    def map_item_to_doc(self, item: Dict[str, Any], doc: Dict[str, Any], metadata: Optional[DocumentMetadata]) -> None:
+    def map_item_to_doc(
+        self,
+        item: Dict[str, Any],
+        doc: Dict[str, Any],
+        metadata: Optional[DocumentMetadata],
+    ) -> None:
         """Map the api response to doctype"""
 
         for key, value in item.items():

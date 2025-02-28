@@ -10,7 +10,9 @@ class VirtualDocumentMetadata(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def update_meta(self, doctype: str, name: str, key: str, value: Any) -> None:
+    def update_meta(
+        self, doctype: str, name: str, key: str, value: Any
+    ) -> None:
         """Should update one value of DocumentMetadata."""
         pass
 

@@ -10,7 +10,9 @@ from frappe import _
 from frappe.database.schema import add_column
 from frappe.desk.form.document_follow import follow_document
 
-from vrtnext.models.document_metadata.redis_document_metadata import RedisDocumentMetadata
+from vrtnext.models.document_metadata.redis_document_metadata import (
+    RedisDocumentMetadata,
+)
 
 
 @frappe.whitelist()
@@ -23,7 +25,8 @@ def toggle_like(doctype, name, add=False):
 
     :param doctype: DocType of the document to like
     :param name: Name of the document to like
-    :param add: `Yes` if like is to be added. If not `Yes` the like will be removed."""
+    :param add: `Yes` if like is to be added. If not `Yes` the like will be removed.
+    """
 
     is_virtual_doctype = frappe.get_meta(doctype).is_virtual
 
@@ -42,9 +45,19 @@ def _toggle_virtual_like(doctype, name, add, user=None):
     redis_doc_meta = RedisDocumentMetadata()
 
     try:
-        filters = [["reference_name", "=", name], ["comment_type", "=", "Like"], ["reference_doctype", "=", doctype], ["owner", "=", user]]
+        filters = [
+            ["reference_name", "=", name],
+            ["comment_type", "=", "Like"],
+            ["reference_doctype", "=", doctype],
+            ["owner", "=", user],
+        ]
 
-        liked_by = frappe.db.get_list("Comment", fields=["owner"], filters=filters, order_by="modified desc")
+        liked_by = frappe.db.get_list(
+            "Comment",
+            fields=["owner"],
+            filters=filters,
+            order_by="modified desc",
+        )
 
         print(f"Liked By: {liked_by}")
 
@@ -57,13 +70,17 @@ def _toggle_virtual_like(doctype, name, add, user=None):
             if user not in liked_by:
                 liked_by.append(user)
                 add_comment(doctype, name)
-                if frappe.get_cached_value("User", user, "follow_liked_documents"):
+                if frappe.get_cached_value(
+                    "User", user, "follow_liked_documents"
+                ):
                     follow_document(doctype, name, user)
         else:
             if user in liked_by:
                 liked_by.remove(user)
                 remove_like(doctype, name)
-        redis_doc_meta.update_meta(doctype, name, "_liked_by", json.dumps(liked_by))
+        redis_doc_meta.update_meta(
+            doctype, name, "_liked_by", json.dumps(liked_by)
+        )
 
     except frappe.db.ProgrammingError as e:
         if frappe.db.is_missing_column(e):
@@ -91,7 +108,9 @@ def _toggle_like(doctype, name, add, user=None):
             if user not in liked_by:
                 liked_by.append(user)
                 add_comment(doctype, name)
-                if frappe.get_cached_value("User", user, "follow_liked_documents"):
+                if frappe.get_cached_value(
+                    "User", user, "follow_liked_documents"
+                ):
                     follow_document(doctype, name, user)
         else:
             if user in liked_by:
@@ -99,9 +118,20 @@ def _toggle_like(doctype, name, add, user=None):
                 remove_like(doctype, name)
 
         if frappe.get_meta(doctype).issingle:
-            frappe.db.set_single_value(doctype, "_liked_by", json.dumps(liked_by), update_modified=False)
+            frappe.db.set_single_value(
+                doctype,
+                "_liked_by",
+                json.dumps(liked_by),
+                update_modified=False,
+            )
         else:
-            frappe.db.set_value(doctype, name, "_liked_by", json.dumps(liked_by), update_modified=False)
+            frappe.db.set_value(
+                doctype,
+                name,
+                "_liked_by",
+                json.dumps(liked_by),
+                update_modified=False,
+            )
 
     except frappe.db.ProgrammingError as e:
         if frappe.db.is_missing_column(e):

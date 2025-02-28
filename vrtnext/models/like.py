@@ -19,7 +19,9 @@ class LikeController:
                 ["comment_type", "=", "Like"],
             ]
 
-            return frappe.db.get_list("Comment", filters=filters, order_by="modified desc")
+            return frappe.db.get_list(
+                "Comment", filters=filters, order_by="modified desc"
+            )
 
         except Exception:
             return []
