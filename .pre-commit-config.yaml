@@ -22,7 +22,6 @@ repos:
     rev: 5.13.2
     hooks:
       - id: isort
-        args: [--profile=black, --line-length=80]
 
   - repo: https://github.com/psf/black
     rev: 23.12.1
@@ -40,7 +39,6 @@ repos:
     hooks:
       - id: mypy
         exclude: ^(docs/|example-plugin/)
-        args: [--ignore-missing-imports]
 
   - repo: https://github.com/asottile/setup-cfg-fmt
     rev: v2.5.0

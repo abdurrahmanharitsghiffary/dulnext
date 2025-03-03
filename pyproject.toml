@@ -25,3 +25,11 @@ build-backend = "flit_core.buildapi"
 
 [tool.black]
 line-length = 80
+
+[tool.isort]
+profile = "black"
+line_length = 80
+
+[tool.mypy]
+ignore_missing_imports = true
+disable_error_code = "import-untyped"
