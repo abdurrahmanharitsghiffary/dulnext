@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "ms-python.black-formatter",
+    "ms-python.flake8",
+    "nwgh.bandit",
+    "fill-labs.dependi",
+    "EditorConfig.EditorConfig",
+    "dbaeumer.vscode-eslint",
+    "tamasfe.even-better-toml",
+    "ms-python.isort",
+    "ms-python.mypy-type-checker",
+    "ms-python.vscode-pylance",
+    "ms-python.python",
+    "ms-python.debugpy",
+    "esbenp.prettier-vscode"
+  ]
+}

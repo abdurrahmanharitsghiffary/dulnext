@@ -14,7 +14,8 @@ dist/
 *.swo
 *~
 .idea/
-.vscode/
+.vscode/*
+!.vscode/extensions.json
 .backportrc.json
 .mypy_cache
 
