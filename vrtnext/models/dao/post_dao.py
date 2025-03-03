@@ -20,7 +20,9 @@ class PostDAO(VirtualDAO):
     ) -> VirtualCountResponse[Any]:
         """Get model instances counts."""
 
-        response = requests.get("https://jsonplaceholder.typicode.com/posts")
+        response = requests.get(
+            "https://jsonplaceholder.typicode.com/posts", timeout=10
+        )
 
         data = response.json()
 
@@ -32,7 +34,7 @@ class PostDAO(VirtualDAO):
         """Finds all model instances matching the given filters."""
 
         response = requests.get(
-            "https://jsonplaceholder.typicode.com/posts",
+            "https://jsonplaceholder.typicode.com/posts", timeout=10
         )
 
         data = response.json()
@@ -42,7 +44,8 @@ class PostDAO(VirtualDAO):
     def destroy(self, name: str) -> VirtualActionResponse[int, Any]:
         """Deletes the current model instance from the database or API."""
         requests.delete(
-            "https://jsonplaceholder.typicode.com/posts/" + str(name)
+            "https://jsonplaceholder.typicode.com/posts/" + str(name),
+            timeout=10,
         )
 
         return VirtualActionResponse(actual_response=None, affected=1)
@@ -52,7 +55,7 @@ class PostDAO(VirtualDAO):
     ) -> VirtualActionResponse[Entity, Any]:
         """Updates the model instance in the database or API."""
 
-        response = requests.patch("https://jsonplaceholder.typicode.com/posts/" + str(name), new_data)  # type: ignore[arg-type]
+        response = requests.patch("https://jsonplaceholder.typicode.com/posts/" + str(name), new_data, timeout=10)  # type: ignore[arg-type]
 
         data = response.json()
 
@@ -61,7 +64,7 @@ class PostDAO(VirtualDAO):
     def insert(self, data: Entity) -> VirtualActionResponse[Entity, Any]:
         """Inserts the model instance in the database or API."""
 
-        response = requests.post("https://jsonplaceholder.typicode.com/posts", data)  # type: ignore[arg-type]
+        response = requests.post("https://jsonplaceholder.typicode.com/posts", data, timeout=10)  # type: ignore[arg-type]
 
         data = response.json()
 
@@ -73,7 +76,9 @@ class PostDAO(VirtualDAO):
     ) -> VirtualFindResponse[PostEntity, Any]:
         """Finds a single model instance matching the given filters."""
 
-        response = requests.get("https://jsonplaceholder.typicode.com/posts")
+        response = requests.get(
+            "https://jsonplaceholder.typicode.com/posts", timeout=10
+        )
 
         data = response.json()
 
@@ -82,7 +87,8 @@ class PostDAO(VirtualDAO):
     def find_one_by_pk(self, name: str) -> VirtualFindResponse[PostEntity, Any]:
         """Finds a model instance by its primary key."""
         response = requests.get(
-            "https://jsonplaceholder.typicode.com/posts/" + str(name)
+            "https://jsonplaceholder.typicode.com/posts/" + str(name),
+            timeout=10,
         )
 
         data = response.json()

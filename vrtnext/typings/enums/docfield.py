@@ -33,7 +33,7 @@ class Docfield(Enum):
     LongText = "lxt"
     Text = "txt"
     MarkdownEditor = "mor"
-    Password = "prd"
+    Password = "prd"  # nosec
     Percent = "pnt"
     Rating = "rng"
     ReadOnly = "rly"

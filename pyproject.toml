@@ -33,3 +33,14 @@ line_length = 80
 [tool.mypy]
 ignore_missing_imports = true
 disable_error_code = "import-untyped"
+
+[tool.bandit]
+exclude_dirs = ["tests", "test_*.py", "*_test.py"]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "pep440"
+version = "0.4.0"
+update_changelog_on_bump = true
+major_version_zero = true

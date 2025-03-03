@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.4.0 (2025-03-03)
+
+### Feat
+
+- override like and comment for virtual doctype
+- move all interfaces into abc folder
+- add new ClientSideController and ClientSideContext
+- add RestModelMapper to enable robust mapping
+- add ClientSidePaginator implementation
+
+### Fix
+
+- fixing docker-compose.yaml
+- fix missing import error
+- update RedisDocumentMetadata to use the enum
+- fixing some minor bugs RestModelMapper
+
+### Refactor
+
+- update app name and add some interfaces
+
 ## 0.3.0 (2025-02-22)
 
 ### Feat
