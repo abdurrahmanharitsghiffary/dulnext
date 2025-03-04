@@ -4,11 +4,11 @@ import frappe
 from frappe.model.document import Document
 
 from vrtnext.abc.virtual_controller import VirtualController
-from vrtnext.constants import Constants
-from vrtnext.models.context.client_side_context import ClientSideContext
-from vrtnext.models.document_metadata.redis_document_metadata import (
+from vrtnext.common.context.client_side_context import ClientSideContext
+from vrtnext.common.document_metadata.redis_document_metadata import (
     RedisDocumentMetadata,
 )
+from vrtnext.constants import Constants
 from vrtnext.typings.document_metadata import DocumentMetadata
 from vrtnext.typings.pagination_options import PaginationOptions
 from vrtnext.typings.virtual_dao import VirtualCountResponse, VirtuaListResponse

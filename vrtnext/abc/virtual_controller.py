@@ -3,8 +3,6 @@ from typing import Dict, Optional
 
 from frappe.model.document import Document
 
-from vrtnext.models.like import LikeController
-
 
 class VirtualController(Document, ABC):
     """
@@ -26,6 +24,3 @@ class VirtualController(Document, ABC):
         """
 
         return None
-
-    def get_liked_by(self):
-        return LikeController().get_likes()

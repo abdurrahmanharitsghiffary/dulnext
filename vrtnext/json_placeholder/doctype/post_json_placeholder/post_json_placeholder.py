@@ -3,7 +3,7 @@
 
 # import frappe
 
-from vrtnext.controllers.post_controller import PostController
+from .post_controller import PostController
 
 
 class PostJSONPlaceholder(PostController):

@@ -10,7 +10,7 @@ from frappe import _
 from frappe.database.schema import add_column
 from frappe.desk.form.document_follow import follow_document
 
-from vrtnext.models.document_metadata.redis_document_metadata import (
+from vrtnext.common.document_metadata.redis_document_metadata import (
     RedisDocumentMetadata,
 )
 

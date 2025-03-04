@@ -4,8 +4,8 @@ import frappe
 from frappe.model.document import Document
 
 from vrtnext.abc.virtual_controller import VirtualController
+from vrtnext.common.context.rest_context import RestContext
 from vrtnext.constants import Constants
-from vrtnext.models.context.rest_context import RestContext
 from vrtnext.typings.pagination_options import PaginationOptions
 from vrtnext.typings.virtual_dao import VirtualCountResponse, VirtuaListResponse
 from vrtnext.utilities import Logger

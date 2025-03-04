@@ -1,8 +1,8 @@
 from vrtnext.abc.virtual_context import VirtualContext
 from vrtnext.abc.virtual_dao import VirtualDAO
 from vrtnext.abc.virtual_mapper import VirtualMapper
-from vrtnext.models.filters.client_side_filters import ClientSideFilters
-from vrtnext.models.paginator.client_side_paginator import ClientSidePaginator
+from vrtnext.common.filters.client_side_filters import ClientSideFilters
+from vrtnext.common.paginator.client_side_paginator import ClientSidePaginator
 
 
 class ClientSideContext(VirtualContext):

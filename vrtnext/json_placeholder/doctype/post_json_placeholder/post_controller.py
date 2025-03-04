@@ -1,5 +1,6 @@
 from vrtnext.controllers.client_side_controller import ClientSideController
-from vrtnext.models.context.post_context import PostContext
+
+from .post_context import PostContext
 
 POST_CONTEXT = PostContext()
 

@@ -8,7 +8,7 @@ from frappe import _
 from frappe.core.doctype.file.utils import extract_images_from_html
 from frappe.desk.form.document_follow import follow_document
 
-from vrtnext.models.document_metadata.redis_document_metadata import (
+from vrtnext.common.document_metadata.redis_document_metadata import (
     RedisDocumentMetadata,
 )
 

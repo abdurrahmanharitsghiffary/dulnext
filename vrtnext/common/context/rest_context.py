@@ -2,7 +2,7 @@ from vrtnext.abc.virtual_context import VirtualContext
 from vrtnext.abc.virtual_dao import VirtualDAO
 from vrtnext.abc.virtual_filters import VirtualFilters
 from vrtnext.abc.virtual_paginator import VirtualPaginator
-from vrtnext.mapper.rest_mapper import RestMapper
+from vrtnext.common.mapper.rest_mapper import RestMapper
 
 
 class RestContext(VirtualContext):
